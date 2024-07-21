@@ -1,0 +1,7 @@
+<svg id="background">
+  <svg id="margin">
+    <text id="date" class="text-base text-left"/>
+    <text id="time" class="text-base text-left"/>
+    <text id="time-suffix" class="text-base"/>
+  </svg>
+</svg>

@@ -1,0 +1,45 @@
+#background {
+  viewport-fill: fb-cyan;
+}
+
+#margin {
+  x: 10%;
+  y: 10%;
+  width: 80%;
+  height: 80%;
+}
+
+#date {
+  y: 75%;
+  font-size: 30;
+  text-length: 16;
+}
+
+#time {
+  y: 100%;
+  font-size: 80;
+  text-length: 8;
+}
+
+#time-suffix {
+  x: $+5;
+  y: 100%;
+  font-size: 30;
+  text-length: 2;
+}
+
+.text-base {
+  fill: white;
+  font-family: System-Bold;
+  font-weight: bold;
+}
+
+.text-right {
+  x: 100%;
+  text-anchor: end;
+}
+
+.text-left {
+  x: 0;
+  text-anchor: start;
+}
