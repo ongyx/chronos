@@ -1,9 +1,9 @@
 import { init as settingsInit } from "./settings";
-import { init as clockInit, setTextAlignment } from "./clock";
+import { init as clockInit, setAlignment } from "./clock";
 
 settingsInit(settings => {
   if (settings.textAlignment) {
-    setTextAlignment(settings.textAlignment);
+    setAlignment(settings.textAlignment);
   }
 });
 clockInit();

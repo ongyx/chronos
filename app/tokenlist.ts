@@ -34,10 +34,10 @@ export class TokenList {
   public remove(...tokens: string[]) {
     let set = {};
     for (let token of tokens) {
-      set[token] = null;
+      set[token] = true;
     }
 
-    this.tokens = this.tokens.filter((t, _, __) => t in set);
+    this.tokens = this.tokens.filter((t, _, __) => !set[t]);
     this.commit();
   }
 

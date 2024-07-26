@@ -28,18 +28,27 @@
   text-length: 2;
 }
 
+#time-suffix.text-end {
+  x: $-5;
+}
+
 .text-base {
   fill: white;
   font-family: System-Bold;
   font-weight: bold;
 }
 
-.text-right {
-  x: 100%;
-  text-anchor: end;
-}
-
-.text-left {
+.text-start {
   x: 0;
   text-anchor: start;
+}
+
+.text-middle {
+  x: 50%;
+  text-anchor: middle;
+}
+
+.text-end {
+  x: 100%;
+  text-anchor: end;
 }

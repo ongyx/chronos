@@ -1,36 +1,41 @@
 import * as fs from "fs";
-import * as messaging from "messaging";
+
+import { recvMessage } from "../common/message";
+import { Settings, defaultSettings } from "../common/settings";
 
 const SETTINGS_TYPE = "cbor";
 const SETTINGS_FILE = "settings.cbor";
 
-let settings = {};
-
-function readSettings() {
-  try {
-    settings = fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
-  } catch (e) {
-    console.log(`Error occurred reading ${SETTINGS_FILE}: ${e}`);
-    settings = {};
-  }
-}
-
-function writeSettings() {
-  fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
-}
+let settings = defaultSettings;
 
 /**
  * Initializes the app's settings.
  *
  * @param onUpdate - Callback for settings updates.
  */
-export function init(onUpdate?: (settings: any) => void) {
+export function init(onUpdate?: (settings: Settings) => void) {
   readSettings();
 
-  messaging.peerSocket.addEventListener("message", event => {
-    let data: { key: string, value: any } = event.data;
-    settings[data.key] = data.value;
+  recvMessage(msg => {
+    if (msg.type === "setting") {
+      console.log(`Receiving setting ${msg.key}=${JSON.stringify(msg.value)}`);
 
-    onUpdate?.(settings);
+      settings[msg.key] = msg.value;
+      writeSettings();
+
+      onUpdate?.(settings);
+    }
   });
+}
+
+function readSettings() {
+  try {
+    settings = fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
+  } catch (e) {
+    // This is empty on purpose; the settings will revert to the defaults if the settings file cannot be read.
+  }
+}
+
+function writeSettings() {
+  fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
 }

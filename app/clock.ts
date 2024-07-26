@@ -1,16 +1,44 @@
 import clock, { TickEvent } from "clock";
 import document from "document";
 import { preferences, locale as localeSettings } from "user-settings";
-import { TEXT_LEFT, TEXT_RIGHT } from "./css";
+import { setTextAnchor } from "./css";
 
 import { getLocale } from "./i18n/registry";
-import { TokenList } from "./tokenlist";
 
 const timeLabel = document.getElementById("time")! as TextElement;
 
 const timeSuffixLabel = document.getElementById("time-suffix")! as TextElement;
 
 const dateLabel = document.getElementById("date")! as TextElement;
+
+/**
+ * Initializes the app's clock.
+ */
+export function init() {
+  clock.granularity = "seconds";
+
+  clock.ontick = (event) => {
+    updateTime(event);
+    updateDate(event);
+  }
+}
+
+/**
+ * Sets the alignment for clock text.
+ *
+ * @param align - The alignment to use.
+ */
+export function setAlignment(align: "start" | "middle" | "end") {
+  setTextAnchor(timeLabel, align);
+  setTextAnchor(dateLabel, align);
+
+  if (align === "end") {
+    // Make the suffix appear before the time by anchoring to the end.
+    setTextAnchor(timeSuffixLabel, "end");
+  } else {
+    setTextAnchor(timeSuffixLabel, "start");
+  }
+}
 
 /**
  * Zero pads an integer number if it is less than 10.
@@ -60,28 +88,4 @@ function updateDate(event: TickEvent) {
   let locale = getLocale(localeSettings.language);
 
   dateLabel.text = locale.formatDate(event.date);
-}
-
-/**
- * Initializes the app's clock.
- */
-export function init() {
-  clock.granularity = "seconds";
-
-  clock.ontick = (event) => {
-    updateTime(event);
-    updateDate(event);
-  }
-}
-
-export function setTextAlignment(align: "left" | "right") {
-  for (let elem of document.getElementsByTagName("text")) {
-    let classList = new TokenList(elem);
-
-    if (align === "left") {
-      classList.replace(TEXT_LEFT, TEXT_RIGHT);
-    } else if (align === "right") {
-      classList.replace(TEXT_RIGHT, TEXT_LEFT);
-    }
-  }
 }

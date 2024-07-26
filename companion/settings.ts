@@ -1,21 +1,44 @@
-import * as messaging from "messaging";
 import { settingsStorage } from "settings";
 
+import { sendMessage } from "../common/message";
+import { Settings, defaultSettings } from "../common/settings";
+import { Selection, getSelected } from "./jsx";
+
+/**
+ * Initializes the companion's settings.
+ */
 export function init() {
   settingsStorage.addEventListener("change", event => {
-    if (event.oldValue !== event.newValue && event.newValue) {
-      sendSettings({
-        key: event.key,
-        value: JSON.parse(event.newValue),
-      });
+    if (
+      event.key !== null
+      && event.oldValue !== event.newValue
+      && event.newValue !== null
+    ) {
+      const key = event.key;
+      let value = JSON.parse(event.newValue);
+
+      switch (key) {
+        case "textAlignment":
+          value = getSelected(value as Selection);
+          break;
+        default:
+          console.error(`Unknown settings key ${key}`);
+          break;
+      }
+
+      sendMessage({ type: "setting", key, value, });
     }
-  })
+  });
+
+  if (settingsStorage.length === 0) {
+    reset();
+  }
 }
 
-function sendSettings(data: any) {
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send(data);
-  } else {
-    console.log("peerSocket connection is unavailable.");
+function reset() {
+  for (const key in defaultSettings) {
+    const value = defaultSettings[key];
+
+    settingsStorage.setItem(key, JSON.stringify(value));
   }
 }

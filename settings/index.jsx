@@ -5,8 +5,9 @@ registerSettingsPage(({ settings }) => (
         label={`Text Alignment`}
         settingsKey="textAlignment"
         options={[
-          {name: "Left", value: "left"},
-          {name: "Right", value: "right"},
+          {name: "Left", value: "start"},
+          {name: "Center", value: "middle"},
+          {name: "Right", value: "end"},
         ]}
       />
     </Section>
