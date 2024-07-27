@@ -22,8 +22,8 @@ export function init(onUpdate?: (settings: DeviceSettings) => void) {
   // When a message is received from the companion, check if there is a change in settings.
   recvMessage(msg => {
     switch (msg.type) {
-      case "setting":
-        console.log(`Receiving setting ${msg.key}=${JSON.stringify(msg.value)}`);
+      case "settings.add":
+        console.log(`Adding setting ${msg.key}=${JSON.stringify(msg.value)}`);
 
         // Update the setting and invoke the update callback, if any.
         settings[msg.key] = msg.value;
@@ -32,7 +32,16 @@ export function init(onUpdate?: (settings: DeviceSettings) => void) {
 
         break;
 
-      case "reset":
+      case "settings.remove":
+        console.log(`Removing setting ${msg.key}`);
+
+        delete settings[msg.key];
+        writeSettings();
+        onUpdate?.(settings);
+
+        break;
+
+      case "settings.reset":
         console.log("Resetting settings...");
 
         settings = defaultDeviceSettings();

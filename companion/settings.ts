@@ -12,18 +12,23 @@ import { defaultCompanionSettings } from "../common/settings";
  * Initializes the companion's settings.
  */
 export function init() {
-  // Whenever a setting changes locally, send it to the device.
   settingsStorage.addEventListener("change", event => {
-    // Reset settings when the storage is cleared.
-    if (event.key === null || event.newValue === null) {
+    if (event.key === null) {
+      // Storage was cleared, so reset settings.
       console.log("Resetting settings...");
       reset();
       return;
     }
 
-    // Send the new settings when the value changes.
+    // Only change settings if the values differ.
     if (event.newValue !== event.oldValue) {
-      sendSetting(event.key, event.newValue);
+      if (event.newValue === null) {
+        // The setting was removed from storage.
+        removeDeviceSettings(event.key);
+      } else {
+        // The setting was added to or changed in the storage.
+        addDeviceSettings(event.key, event.newValue);
+      }
     }
   });
 
@@ -57,7 +62,7 @@ function reset() {
     settingsStorage.setItem(key, JSON.stringify(value));
   }
 
-  sendMessage({ type: "reset" })
+  resetDeviceSettings();
 }
 
 /**
@@ -69,18 +74,18 @@ function sync() {
     const value = settingsStorage.getItem(key ?? "");
 
     if (key !== null && value !== null) {
-      sendSetting(key, value);
+      addDeviceSettings(key, value);
     }
   }
 }
 
 /**
- * Sends a shared setting as a key-value pair to the device.
+ * Adds a setting as a key-value pair to the device.
  *
  * @param key - The setting's key.
  * @param jsonValue - The setting's value in JSON, retrieved from `settingsStorage`.
  */
-function sendSetting(key: string, jsonValue: string) {
+function addDeviceSettings(key: string, jsonValue: string) {
   let value = JSON.parse(jsonValue);
 
   switch (key) {
@@ -98,7 +103,17 @@ function sendSetting(key: string, jsonValue: string) {
       break;
 
     case "backgroundImage":
-      value = sendBackgroundImage(getImageUri(value));
+      if (value) {
+        // Only send the background image if it is defined.
+        value = sendBackgroundImage(getImageUri(value));
+      }
+      break;
+
+    case "backgroundColor":
+      if (value instanceof Object) {
+        value = value.value;
+      }
+
       break;
 
     default:
@@ -106,7 +121,23 @@ function sendSetting(key: string, jsonValue: string) {
       return;
   }
 
-  sendMessage({ type: "setting", key, value, });
+  sendMessage({ type: "settings.add", key, value, });
+}
+
+/**
+ * Removes a setting from the device.
+ *
+ * @param key - The setting's key.
+ */
+function removeDeviceSettings(key: string) {
+  sendMessage({ type: "settings.remove", key });
+}
+
+/**
+ * Resets all settings on the device.
+ */
+function resetDeviceSettings() {
+  sendMessage({ type: "settings.reset" });
 }
 
 /**

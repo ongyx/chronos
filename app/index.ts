@@ -1,4 +1,4 @@
-import { init as backgroundInit, setBackground } from "./background";
+import { init as backgroundInit, setBackgroundColor, setBackgroundImage } from "./background";
 import { init as settingsInit } from "./settings";
 import { init as clockInit, setAlignment, setColor } from "./clock";
 
@@ -9,7 +9,8 @@ settingsInit(settings => {
 
   setAlignment(settings.textAlignment);
   setColor(settings.textColor);
-  setBackground(settings.backgroundImage);
+  setBackgroundImage(settings.backgroundImage);
+  setBackgroundColor(settings.backgroundColor);
 });
 
 clockInit();

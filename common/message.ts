@@ -3,22 +3,30 @@ import * as messaging from "messaging";
 /**
  * A message sent between the device and companion.
  */
-export type Message = Setting | Reset;
+export type Message = SettingsAdd | SettingsRemove | SettingsReset;
 
 /**
- * A message representing a change in settings.
+ * A message for adding or changing settings.
  */
-export interface Setting {
-  type: "setting",
+export interface SettingsAdd {
+  type: "settings.add",
   key: string,
   value: any,
 }
 
 /**
- * A message representing a settings reset.
+ * A message for removing settings.
  */
-export interface Reset {
-  type: "reset",
+export interface SettingsRemove {
+  type: "settings.remove",
+  key: string,
+}
+
+/**
+ * A message for resetting settings.
+ */
+export interface SettingsReset {
+  type: "settings.reset",
 }
 
 /**

@@ -7,8 +7,8 @@ export const textAlignmentOptions = [
   { name: "Right", value: "end" },
 ];
 
-/** Options for text color. */
-export const textColorOptions = [
+/** Options for color pickers. */
+export const colorOptions = [
   { color: "black" },
   { color: "darkslategrey" },
   { color: "dimgrey" },
@@ -64,6 +64,7 @@ export interface DeviceSettings {
   textAlignment: "start" | "middle" | "end",
   textColor: string,
   backgroundImage: string,
+  backgroundColor: string,
 }
 
 /** Settings stored on the companion in `settingsStorage`. */
@@ -73,6 +74,7 @@ export interface CompanionSettings {
   textAlignment: Select,
   textColor: string,
   backgroundImage?: ImagePicker,
+  backgroundColor?: string,
 }
 
 /** Returns he default set of device settings. */
@@ -80,6 +82,7 @@ export const defaultDeviceSettings = (): DeviceSettings => ({
   textAlignment: "start",
   textColor: "white",
   backgroundImage: "",
+  backgroundColor: "black",
 })
 
 /** Returns the default set of companion settings. */

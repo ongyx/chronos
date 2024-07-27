@@ -1,8 +1,8 @@
-import { textAlignmentOptions, textColorOptions } from "../common/settings";
+import { textAlignmentOptions, colorOptions } from "../common/settings";
 import { version } from "../common/version";
 
 function suggestColor(input: string): {name: string, value: string}[] {
-  const colors = textColorOptions
+  const colors = colorOptions
     .filter(o => o.color.startsWith(input))
     .map(o => ({name: o.color, value: o.color}));
 
@@ -29,7 +29,7 @@ function settingsPage(props: SettingsComponentProps) {
       />
 
       <ColorSelect
-        colors={textColorOptions}
+        colors={colorOptions}
         settingsKey="textColor"
       />
     </Section>
@@ -40,6 +40,23 @@ function settingsPage(props: SettingsComponentProps) {
         settingsKey="backgroundImage"
         imageWidth={screenWidth}
         imageHeight={screenHeight}
+      />
+
+      <Button
+        label="Remove Image"
+        onClick={() => props.settingsStorage.setItem("backgroundImage", JSON.stringify(""))}
+      />
+
+      <TextInput
+        label="Color"
+        placeholder="Enter a valid CSS color..."
+        settingsKey="backgroundColor"
+        onAutocomplete={suggestColor}
+      />
+
+      <ColorSelect
+        colors={colorOptions}
+        settingsKey="backgroundColor"
       />
     </Section>
 

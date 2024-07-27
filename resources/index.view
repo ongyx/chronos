@@ -1,5 +1,6 @@
-<svg id="root">
-  <image id="background"/>
+<svg>
+  <rect id="background-color" class="full-size"/>
+  <image id="background-image" class="full-size"/>
 
   <svg id="margin">
     <text id="date" class="text-base text-start"/>
