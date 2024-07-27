@@ -1,31 +1,50 @@
+import document from "document";
 import * as fs from "fs";
 
 import { recvMessage } from "../common/message";
-import { Settings, defaultSettings } from "../common/settings";
+import { DeviceSettings, defaultDeviceSettings } from "../common/settings";
 
 const SETTINGS_TYPE = "cbor";
 const SETTINGS_FILE = "settings.cbor";
 
-let settings = defaultSettings;
+let settings = defaultDeviceSettings();
 
 /**
  * Initializes the app's settings.
  *
  * @param onUpdate - Callback for settings updates.
  */
-export function init(onUpdate?: (settings: Settings) => void) {
+export function init(onUpdate?: (settings: DeviceSettings) => void) {
+  // Read the initial settings from disk.
   readSettings();
+  onUpdate?.(settings);
 
+  // When a message is received from the companion, check if there is a change in settings.
   recvMessage(msg => {
-    if (msg.type === "setting") {
-      console.log(`Receiving setting ${msg.key}=${JSON.stringify(msg.value)}`);
+    switch (msg.type) {
+      case "setting":
+        console.log(`Receiving setting ${msg.key}=${JSON.stringify(msg.value)}`);
 
-      settings[msg.key] = msg.value;
-      writeSettings();
+        // Update the setting and invoke the update callback, if any.
+        settings[msg.key] = msg.value;
+        writeSettings();
+        onUpdate?.(settings);
 
-      onUpdate?.(settings);
+        break;
+
+      case "reset":
+        console.log("Resetting settings...");
+
+        settings = defaultDeviceSettings();
+        writeSettings();
+        onUpdate?.(settings);
+
+        break;
     }
   });
+
+  // Persist settings when this clock face is unloaded.
+  document.addEventListener("unload", (_) => writeSettings());
 }
 
 function readSettings() {

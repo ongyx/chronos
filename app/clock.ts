@@ -17,10 +17,10 @@ const dateLabel = document.getElementById("date")! as TextElement;
 export function init() {
   clock.granularity = "seconds";
 
-  clock.ontick = (event) => {
+  clock.addEventListener("tick", event => {
     updateTime(event);
     updateDate(event);
-  }
+  });
 }
 
 /**

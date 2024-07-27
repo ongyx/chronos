@@ -1,7 +1,9 @@
-<svg id="background">
+<svg id="root">
+  <image id="background"/>
+
   <svg id="margin">
-    <text id="date" class="text-base text-end"/>
-    <text id="time" class="text-base text-end"/>
-    <text id="time-suffix" class="text-base text-end"/>
+    <text id="date" class="text-base text-start"/>
+    <text id="time" class="text-base text-start"/>
+    <text id="time-suffix" class="text-base text-start"/>
   </svg>
 </svg>
