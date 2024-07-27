@@ -1,29 +1,61 @@
-import { textAlignmentOptions } from "../common/settings";
+import { textAlignmentOptions, textColorOptions } from "../common/settings";
+import { version } from "../common/version";
+
+function suggestColor(input: string): {name: string, value: string}[] {
+  const colors = textColorOptions
+    .filter(o => o.color.startsWith(input))
+    .map(o => ({name: o.color, value: o.color}));
+
+  return colors.length !== 0 ? colors : [{name: input, value: input}];
+}
 
 function settingsPage(props: SettingsComponentProps) {
   const screenWidth = props.settingsStorage.getItem("screenWidth")!;
   const screenHeight = props.settingsStorage.getItem("screenHeight")!;
 
   return <Page>
-    <Select
-      title=""
-      label="Text Alignment"
-      settingsKey="textAlignment"
-      options={textAlignmentOptions}
-    />
+    <Section title="Text">
+      <Select
+        label="Alignment"
+        settingsKey="textAlignment"
+        options={textAlignmentOptions}
+      />
 
-    <ImagePicker
-      label="Background Image"
-      description="Choose a background image to show."
-      settingsKey="backgroundImage"
-      imageWidth={screenWidth}
-      imageHeight={screenHeight}
-    />
+      <TextInput
+        label="Color"
+        placeholder="Enter a valid CSS color..."
+        settingsKey="textColor"
+        onAutocomplete={suggestColor}
+      />
+
+      <ColorSelect
+        colors={textColorOptions}
+        settingsKey="textColor"
+      />
+    </Section>
+
+    <Section title="Background">
+      <ImagePicker
+        label="Image (Tap here to pick one)"
+        settingsKey="backgroundImage"
+        imageWidth={screenWidth}
+        imageHeight={screenHeight}
+      />
+    </Section>
 
     <Button
-      label="Reset settings (this cannot be undone!)"
+      label="Reset Settings (this cannot be undone!)"
       onClick={() => props.settingsStorage.clear()}
     />
+
+    <Section title="About">
+      <Text bold={true} align={"center"}>Chronos v{version}</Text>
+
+      <Text>        
+        Made with &#x2665;&#xfe0f; by Ong Yong Xin.
+        The source code is available <Link source="https://github.com/ongyx/chronos">here</Link>.
+      </Text>
+    </Section>
   </Page>
 }
 

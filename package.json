@@ -6,7 +6,8 @@
   "devDependencies": {
     "@fitbit/sdk": "~6.1.0",
     "@fitbit/sdk-cli": "^1.7.3",
-    "fitbit-sdk-types": "^8.0.3"
+    "fitbit-sdk-types": "^8.0.3",
+    "genversion": "^3.2.0"
   },
   "fitbit": {
     "appUUID": "be30d039-9843-400f-93a9-f99bb9781edf",
@@ -23,7 +24,8 @@
     "defaultLanguage": "en-US"
   },
   "scripts": {
-    "build": "fitbit-build",
+    "genver": "genversion --esm common/version.ts",
+    "build": "npm run genver && fitbit-build",
     "debug": "fitbit"
   }
 }

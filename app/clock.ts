@@ -24,7 +24,7 @@ export function init() {
 }
 
 /**
- * Sets the alignment for clock text.
+ * Sets the alignment of the clock text.
  *
  * @param align - The alignment to use.
  */
@@ -37,6 +37,22 @@ export function setAlignment(align: "start" | "middle" | "end") {
     setTextAnchor(timeSuffixLabel, "end");
   } else {
     setTextAnchor(timeSuffixLabel, "start");
+  }
+}
+
+/**
+ * Sets the color of the clock text.
+ *
+ * @param color - The color to use.
+ */
+export function setColor(color: string) {
+  for (const label of [timeLabel, dateLabel, timeSuffixLabel]) {
+    try {
+      label.style.fill = color;
+    } catch {
+      // Default back to white.
+      label.style.fill = "white";
+    }
   }
 }
 

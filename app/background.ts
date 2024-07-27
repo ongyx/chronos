@@ -35,9 +35,14 @@ export function setBackground(filename: string) {
   }
 
   const oldFilename = backgroundImage.href;
+  if (filename === oldFilename) {
+    // No-op.
+    return;
+  }
 
   backgroundImage.href = filename;
 
+  // Delete the old background image.
   if (oldFilename !== "") {
     unlinkSync(oldFilename);
   }

@@ -1,3 +1,4 @@
+import { me as companion } from "companion";
 import { outbox } from "file-transfer";
 import { Image } from "image";
 import { device } from "peer";
@@ -30,7 +31,9 @@ export function init() {
     // Initialize settings on first run.
     console.log("Initializing settings...");
     reset();
-  } else {
+  }
+
+  if (companion.launchReasons.settingsChanged) {
     console.log("Syncing settings...");
     sync();
   }
@@ -84,6 +87,14 @@ function sendSetting(key: string, jsonValue: string) {
     case "textAlignment":
       // Get the actual selected value.
       value = getSelected(value);
+      break;
+
+    case "textColor":
+      if (value instanceof Object) {
+        // The text color has been overriden by the input box.
+        value = value.value;
+      }
+
       break;
 
     case "backgroundImage":
