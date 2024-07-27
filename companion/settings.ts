@@ -7,8 +7,6 @@ import { getSelected, getImageUri } from "../common/jsx";
 import { sendMessage } from "../common/message";
 import { defaultCompanionSettings } from "../common/settings";
 
-const BACKGROUND_IMAGE_NAME = "background.txi";
-
 /**
  * Initializes the companion's settings.
  */
@@ -89,16 +87,7 @@ function sendSetting(key: string, jsonValue: string) {
       break;
 
     case "backgroundImage":
-      const uri = getImageUri(value);
-
-      // Only send the background image if it is set.
-      if (uri !== "data:,") {
-        sendBackgroundImage(uri);
-        value = `/private/data/${BACKGROUND_IMAGE_NAME}`;
-      } else {
-        value = "";
-      }
-
+      value = sendBackgroundImage(getImageUri(value));
       break;
 
     default:
@@ -113,10 +102,15 @@ function sendSetting(key: string, jsonValue: string) {
  * Sends a background image to the device.
  *
  * @param uri - The background image as a Base64 encoded Data URI.
+ * @returns The background image's filename.
  */
-function sendBackgroundImage(uri: string) {
+function sendBackgroundImage(uri: string): string {
+  const filename = `${Date.now()}.txi`;
+
   Image.from(uri)
     .then(image => image.export("image/vnd.fitbit.txi", { background: "#FFFFFF", }))
-    .then(buf => outbox.enqueue(BACKGROUND_IMAGE_NAME, buf))
+    .then(buf => outbox.enqueue(filename, buf))
     .then(ft => console.log(`Sent file ${ft.name}`));
+
+  return filename;
 }
