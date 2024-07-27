@@ -116,6 +116,10 @@ function addDeviceSettings(key: string, jsonValue: string) {
 
       break;
 
+    case "clockGranularity":
+      value = getSelected(value);
+      break;
+
     default:
       // The setting should not be shared with the device.
       return;

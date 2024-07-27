@@ -7,6 +7,12 @@ export const textAlignmentOptions = [
   { name: "Right", value: "end" },
 ];
 
+/** Options for clock granularity. */
+export const clockGranularityOptions = [
+  { name: "Minutes", value: "minutes" },
+  { name: "Seconds", value: "seconds" },
+]
+
 /** Options for color pickers. */
 export const colorOptions = [
   { color: "black" },
@@ -65,6 +71,7 @@ export interface DeviceSettings {
   textColor: string,
   backgroundImage: string,
   backgroundColor: string,
+  clockGranularity: "minutes" | "seconds",
 }
 
 /** Settings stored on the companion in `settingsStorage`. */
@@ -75,6 +82,7 @@ export interface CompanionSettings {
   textColor: string,
   backgroundImage?: ImagePicker,
   backgroundColor?: string,
+  clockGranularity: Select,
 }
 
 /** Returns he default set of device settings. */
@@ -83,6 +91,7 @@ export const defaultDeviceSettings = (): DeviceSettings => ({
   textColor: "white",
   backgroundImage: "",
   backgroundColor: "black",
+  clockGranularity: "minutes",
 })
 
 /** Returns the default set of companion settings. */
@@ -95,5 +104,9 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
     selected: [0],
   },
   textColor: "white",
+  clockGranularity: {
+    values: [clockGranularityOptions[0]],
+    selected: [0],
+  }
 })
 

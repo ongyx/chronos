@@ -15,7 +15,7 @@ const dateLabel = document.getElementById("date")! as TextElement;
  * Initializes the app's clock.
  */
 export function init() {
-  clock.granularity = "seconds";
+  clock.granularity = "minutes";
 
   clock.addEventListener("tick", event => {
     updateTime(event);

@@ -1,4 +1,4 @@
-import { textAlignmentOptions, colorOptions } from "../common/settings";
+import { textAlignmentOptions, colorOptions, clockGranularityOptions } from "../common/settings";
 import { version } from "../common/version";
 
 function suggestColor(input: string): {name: string, value: string}[] {
@@ -64,6 +64,14 @@ function settingsPage(props: SettingsComponentProps) {
       label="Reset Settings (this cannot be undone!)"
       onClick={() => props.settingsStorage.clear()}
     />
+
+    <Section title="Debug">
+      <Select
+        label="Clock Granularity"
+        settingsKey="clockGranularity"
+        options={clockGranularityOptions}
+      />
+    </Section>
 
     <Section title="About">
       <Text bold={true} align={"center"}>Chronos v{version}</Text>

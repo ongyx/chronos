@@ -60,6 +60,4 @@ export function setBackgroundColor(color: string) {
   } catch {
     backgroundColor.style.fill = "black";
   }
-
-  console.log(backgroundColor.style.fill);
 }
