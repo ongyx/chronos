@@ -1,4 +1,5 @@
 import document from "document";
+import * as jpeg from "jpeg";
 import { inbox } from "file-transfer";
 import { existsSync, unlinkSync } from "fs";
 

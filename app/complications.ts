@@ -1,4 +1,5 @@
 import document from "document";
+import { vibration } from "haptics";
 
 import { setTextAnchor } from "./css";
 import { Complication } from "./complication";
@@ -45,6 +46,8 @@ export function cycle() {
 
     console.log(`Activating complication ${index}`);
     activate(complications[index]);
+
+    vibration.start("bump");
   }
 }
 

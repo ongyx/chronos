@@ -14,7 +14,12 @@ export class Battery implements Complication {
 
   activate(ui: UI): void {
     ui.label.text = battery.chargeLevel.toString();
-    ui.icon.href = ICON;
+    if (battery.charging) {
+      ui.icon.href = CHARGING_ICON;
+    } else {
+      ui.icon.href = ICON;
+    }
+
     ui.refresh();
 
     this.onChange = () => {
@@ -27,7 +32,7 @@ export class Battery implements Complication {
       }
 
       ui.refresh();
-    }
+    };
 
     battery.addEventListener("change", this.onChange);
   }
@@ -37,4 +42,4 @@ export class Battery implements Complication {
       battery.removeEventListener("change", this.onChange);
     }
   }
-}  
+}

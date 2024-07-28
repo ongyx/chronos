@@ -4,8 +4,8 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "@fitbit/sdk": "~6.1.0",
-    "@fitbit/sdk-cli": "^1.7.3",
+    "@fitbit/sdk": "~7.2.0-pre.0",
+    "@fitbit/sdk-cli": "^1.8.0-pre.11",
     "fitbit-sdk-types": "^8.0.3",
     "genversion": "^3.2.0",
     "prettier": "^3.3.3"
@@ -22,8 +22,8 @@
       "access_user_profile"
     ],
     "buildTargets": [
-      "atlas",
-      "vulcan"
+      "rhea",
+      "hera"
     ],
     "i18n": {},
     "defaultLanguage": "en-US"

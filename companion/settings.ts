@@ -12,7 +12,7 @@ import { defaultCompanionSettings } from "../common/settings";
  * Initializes the companion's settings.
  */
 export function init() {
-  settingsStorage.addEventListener("change", event => {
+  settingsStorage.addEventListener("change", (event) => {
     if (event.key === null) {
       // Storage was cleared, so reset settings.
       console.log("Resetting settings...");
@@ -125,7 +125,7 @@ function addDeviceSettings(key: string, jsonValue: string) {
       return;
   }
 
-  sendMessage({ type: "settings.add", key, value, });
+  sendMessage({ type: "settings.add", key, value });
 }
 
 /**
@@ -151,12 +151,14 @@ function resetDeviceSettings() {
  * @returns The background image's filename.
  */
 function sendBackgroundImage(uri: string): string {
-  const filename = `${Date.now()}.txi`;
+  const filename = `${Date.now()}.jpg`;
 
   Image.from(uri)
-    .then(image => image.export("image/vnd.fitbit.txi", { background: "#FFFFFF", }))
-    .then(buf => outbox.enqueue(filename, buf))
-    .then(ft => console.log(`Sent file ${ft.name}`));
+    .then((image) =>
+      image.export("image/jpeg", { background: "#FFFFFF", quality: 40 }),
+    )
+    .then((buf) => outbox.enqueue(filename, buf))
+    .then((ft) => console.log(`Sent file ${ft.name}`));
 
   return filename;
 }

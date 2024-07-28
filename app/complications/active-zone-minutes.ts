@@ -16,7 +16,8 @@ export class ActiveZoneMinutes implements Complication {
 
     if (appbit.permissions.granted("access_activity")) {
       this.onTick = () => {
-        ui.label.text = today.adjusted.activeZoneMinutes?.toString() ?? "-";
+        ui.label.text =
+          today.adjusted.activeZoneMinutes?.total?.toString() ?? "-";
         ui.refresh();
       };
 
