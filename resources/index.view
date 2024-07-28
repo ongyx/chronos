@@ -12,4 +12,6 @@
     <text id="time" class="text-base text-start"/>
     <text id="time-suffix" class="text-base text-start"/>
   </svg>
+
+  <rect id="touch-area" class="touch-area"/>
 </svg>

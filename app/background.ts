@@ -2,17 +2,21 @@ import document from "document";
 import { inbox } from "file-transfer";
 import { existsSync, unlinkSync } from "fs";
 
-const backgroundColor = document.getElementById("background-color")! as GraphicsElement;
-const backgroundImage = document.getElementById("background-image")! as ImageElement;
+const backgroundColor = document.getElementById(
+  "background-color",
+)! as GraphicsElement;
+const backgroundImage = document.getElementById(
+  "background-image",
+)! as ImageElement;
 
 /** Initializes the app's background. */
 export function init() {
   inbox.addEventListener("newfile", () => {
     let filename: string | undefined;
 
-    while (filename = inbox.nextFile()) {
+    while ((filename = inbox.nextFile())) {
       console.log(`Received file ${filename}`);
-      setBackgroundImage(filename);
+      setImage(filename);
     }
   });
 }
@@ -22,7 +26,7 @@ export function init() {
  *
  * @param filename - The filename of the background image. If empty, no background image is shown.
  */
-export function setBackgroundImage(filename: string) {
+export function setImage(filename: string) {
   if (filename !== "") {
     filename = `/private/data/${filename}`;
 
@@ -54,7 +58,7 @@ export function setBackgroundImage(filename: string) {
  *
  * @param color - The background color to show.
  */
-export function setBackgroundColor(color: string) {
+export function setColor(color: string) {
   try {
     backgroundColor.style.fill = color;
   } catch {

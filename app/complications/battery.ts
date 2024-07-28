@@ -15,6 +15,7 @@ export class Battery implements Complication {
   activate(ui: UI): void {
     ui.label.text = battery.chargeLevel.toString();
     ui.icon.href = ICON;
+    ui.refresh();
 
     this.onChange = () => {
       ui.label.text = battery.chargeLevel.toString();

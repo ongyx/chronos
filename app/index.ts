@@ -1,19 +1,41 @@
 import clock from "clock";
+import document from "document";
 
-import { init as backgroundInit, setBackgroundColor, setBackgroundImage } from "./background";
-import { init as complicationsInit, setAlignment as setComplicationsAlignment } from "./complications";
-import { Battery } from "./complications/battery";
+import {
+  init as backgroundInit,
+  setColor as setBackgroundColor,
+  setImage as setBackgroundImage,
+} from "./background";
+import {
+  cycle as complicationsCycle,
+  init as complicationsInit,
+  setAlignment as setComplicationsAlignment,
+} from "./complications";
 import { init as settingsInit } from "./settings";
-import { init as clockInit, setAlignment as setClockAlignment, setColor } from "./clock";
+import {
+  init as clockInit,
+  setAlignment as setClockAlignment,
+  setColor as setClockColor,
+} from "./clock";
+
+import { Battery } from "./complications/battery";
+import { HeartRate } from "./complications/heart-rate";
+
+const touchArea = document.getElementById("touch-area")!;
 
 backgroundInit();
 
-complicationsInit(new Battery());
+complicationsInit(new Battery(), new HeartRate());
 
-settingsInit(settings => {
+// Cycle complications when the screen is tapped.
+touchArea.addEventListener("click", () => {
+  complicationsCycle();
+});
+
+settingsInit((settings) => {
   setClockAlignment(settings.textAlignment);
+  setClockColor(settings.textColor);
   setComplicationsAlignment(settings.textAlignment);
-  setColor(settings.textColor);
   setBackgroundImage(settings.backgroundImage);
   setBackgroundColor(settings.backgroundColor);
 
@@ -21,4 +43,3 @@ settingsInit(settings => {
 });
 
 clockInit();
-

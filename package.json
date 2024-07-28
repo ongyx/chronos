@@ -7,7 +7,8 @@
     "@fitbit/sdk": "~6.1.0",
     "@fitbit/sdk-cli": "^1.7.3",
     "fitbit-sdk-types": "^8.0.3",
-    "genversion": "^3.2.0"
+    "genversion": "^3.2.0",
+    "prettier": "^3.3.3"
   },
   "fitbit": {
     "appUUID": "be30d039-9843-400f-93a9-f99bb9781edf",
@@ -15,7 +16,11 @@
     "appDisplayName": "Chronos",
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
-    "requestedPermissions": [],
+    "requestedPermissions": [
+      "access_activity",
+      "access_heart_rate",
+      "access_user_profile"
+    ],
     "buildTargets": [
       "atlas",
       "vulcan"

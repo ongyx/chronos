@@ -11,78 +11,46 @@ export const textAlignmentOptions = [
 export const clockGranularityOptions = [
   { name: "Minutes", value: "minutes" },
   { name: "Seconds", value: "seconds" },
-]
+];
 
 /** Options for color pickers. */
 export const colorOptions = [
   { color: "black" },
-  { color: "darkslategrey" },
-  { color: "dimgrey" },
-  { color: "grey" },
-  { color: "lightgrey" },
-  { color: "beige" },
+  { color: "silver" },
+  { color: "gray" },
   { color: "white" },
   { color: "maroon" },
-  { color: "saddlebrown" },
-  { color: "darkgoldenrod" },
-  { color: "goldenrod" },
-  { color: "rosybrown" },
-  { color: "wheat" },
-  { color: "navy" },
-  { color: "blue" },
-  { color: "dodgerblue" },
-  { color: "deepskyblue" },
-  { color: "aquamarine" },
-  { color: "cyan" },
-  { color: "olive" },
-  { color: "darkgreen" },
-  { color: "green" },
-  { color: "springgreen" },
-  { color: "limegreen" },
-  { color: "palegreen" },
-  { color: "lime" },
-  { color: "greenyellow" },
-  { color: "darkslateblue" },
-  { color: "slateblue" },
+  { color: "red" },
   { color: "purple" },
   { color: "fuchsia" },
-  { color: "plum" },
-  { color: "orchid" },
-  { color: "lavender" },
-  { color: "darkkhaki" },
-  { color: "khaki" },
-  { color: "lemonchiffon" },
+  { color: "green" },
+  { color: "lime" },
+  { color: "olive" },
   { color: "yellow" },
-  { color: "gold" },
-  { color: "orangered" },
-  { color: "orange" },
-  { color: "coral" },
-  { color: "lightpink" },
-  { color: "palevioletred" },
-  { color: "deeppink" },
-  { color: "darkred" },
-  { color: "crimson" },
-  { color: "red" }
+  { color: "navy" },
+  { color: "blue" },
+  { color: "teal" },
+  { color: "aqua" },
 ];
 
 /** Settings stored on the device in a file. */
 export interface DeviceSettings {
-  textAlignment: "start" | "middle" | "end",
-  textColor: string,
-  backgroundImage: string,
-  backgroundColor: string,
-  clockGranularity: "minutes" | "seconds",
+  textAlignment: "start" | "middle" | "end";
+  textColor: string;
+  backgroundImage: string;
+  backgroundColor: string;
+  clockGranularity: "minutes" | "seconds";
 }
 
 /** Settings stored on the companion in `settingsStorage`. */
 export interface CompanionSettings {
-  screenWidth: number,
-  screenHeight: number,
-  textAlignment: Select,
-  textColor: string,
-  backgroundImage?: ImagePicker,
-  backgroundColor?: string,
-  clockGranularity: Select,
+  screenWidth: number;
+  screenHeight: number;
+  textAlignment: Select;
+  textColor: string;
+  backgroundImage?: ImagePicker;
+  backgroundColor?: string;
+  clockGranularity: Select;
 }
 
 /** Returns he default set of device settings. */
@@ -92,7 +60,7 @@ export const defaultDeviceSettings = (): DeviceSettings => ({
   backgroundImage: "",
   backgroundColor: "black",
   clockGranularity: "minutes",
-})
+});
 
 /** Returns the default set of companion settings. */
 export const defaultCompanionSettings = (): CompanionSettings => ({
@@ -107,6 +75,5 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
   clockGranularity: {
     values: [clockGranularityOptions[0]],
     selected: [0],
-  }
-})
-
+  },
+});

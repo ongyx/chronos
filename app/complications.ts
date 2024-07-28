@@ -15,37 +15,36 @@ let index = 0;
 /**
  * Initializes the clock's complications.
  *
- * @param ccs - The complications to show. There must be at least one complication.
+ * @param ccs - The complication list to show. There must be at least one complication.
  */
 export function init(...ccs: Complication[]) {
   complications = ccs;
 
   if (complications.length > 0) {
-    setComplication(0);
+    activate(complications[0]);
   } else {
     console.error("Complications are empty!");
   }
 }
 
 /**
- * Sets the complication to show on the clock face.
- *
- * @param idx - The index of the complication to show.
+ * Activates the next complication in the complications list.
+ * If the end of the list is reached, this cycles back to the first complication.
  */
-export function setComplication(idx: number) {
-  const previous = complications[index];
-  previous?.deactivate();
+export function cycle() {
+  const previousIndex = index;
 
-  index = idx;
+  index++;
+  if (index >= complications.length) {
+    index = 0;
+  }
 
-  const current = complications[index];
-  current.activate({ label, icon, refresh });
-}
+  if (index != previousIndex) {
+    console.log(`Deactivating complication ${previousIndex}`);
+    complications[previousIndex].deactivate();
 
-function refresh() {
-  if (currentAlign !== undefined) {
-    // This recalculates the position of the icon if the text changes.
-    setAlignment(currentAlign);
+    console.log(`Activating complication ${index}`);
+    activate(complications[index]);
   }
 }
 
@@ -67,7 +66,7 @@ export function setAlignment(align: "start" | "middle" | "end") {
       break;
 
     case "middle":
-      icon.x = (containerBBox.width / 2) + (labelBBox.width / 2) + 5;
+      icon.x = containerBBox.width / 2 + labelBBox.width / 2 + 5;
       break;
 
     case "end":
@@ -76,4 +75,15 @@ export function setAlignment(align: "start" | "middle" | "end") {
   }
 
   currentAlign = align;
+}
+
+function activate(complication: Complication) {
+  complication.activate({ label, icon, refresh });
+}
+
+function refresh() {
+  if (currentAlign !== undefined) {
+    // This recalculates the position of the icon if the text changes.
+    setAlignment(currentAlign);
+  }
 }

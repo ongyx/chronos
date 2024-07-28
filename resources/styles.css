@@ -48,6 +48,10 @@
   x: $-5;
 }
 
+#touch-area {
+  pointer-events: all;
+}
+
 .text-base {
   fill: white;
   font-family: System-Bold;
