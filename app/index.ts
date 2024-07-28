@@ -20,12 +20,19 @@ import {
 
 import { Battery } from "./complications/battery";
 import { HeartRate } from "./complications/heart-rate";
+import { Steps } from "./complications/steps";
+import { ActiveZoneMinutes } from "./complications/active-zone-minutes";
 
 const touchArea = document.getElementById("touch-area")!;
 
 backgroundInit();
 
-complicationsInit(new Battery(), new HeartRate());
+complicationsInit(
+  new Battery(),
+  new HeartRate(),
+  new Steps(),
+  new ActiveZoneMinutes(),
+);
 
 // Cycle complications when the screen is tapped.
 touchArea.addEventListener("click", () => {
