@@ -9,6 +9,22 @@
   height: 80%;
 }
 
+#complication {
+  y: 60%;
+  width: 100%;
+  height: 5%;
+}
+
+#complication-text {
+  y: 100%;
+  font-size: 20;
+  text-length: 16;
+}
+
+#complication-icon {
+  x: $+5;
+}
+
 #date {
   y: 75%;
   font-size: 30;
@@ -51,4 +67,12 @@
 .text-end {
   x: 100%;
   text-anchor: end;
+}
+
+.icon {
+  /* Offset the icon to align with the text. */
+  y: -50%;
+  width: 24;
+  height: 24;
+  fill: white;
 }

@@ -3,6 +3,11 @@
   <image id="background-image" class="full-size"/>
 
   <svg id="margin">
+    <svg id="complication">
+      <text id="complication-text" class="text-base text-start"/>
+      <image id="complication-icon" class="icon"/>
+    </svg>
+
     <text id="date" class="text-base text-start"/>
     <text id="time" class="text-base text-start"/>
     <text id="time-suffix" class="text-base text-start"/>

@@ -24,8 +24,9 @@
     "defaultLanguage": "en-US"
   },
   "scripts": {
+    "genicon": "magick mogrify -format png -size 48x48 -colorspace gray -negate resources/icons/*.svg",
     "genver": "genversion --esm common/version.ts",
-    "build": "npm run genver && fitbit-build",
+    "build": "fitbit-build",
     "debug": "fitbit"
   }
 }

@@ -15,6 +15,12 @@ function settingsPage(props: SettingsComponentProps) {
 
   return <Page>
     <Section title="Text">
+      <Text>
+        To change the displayed time to 12-hour or 24-hour, 
+        go to your <Link source="https://fitbit.com/settings/profile">profile settings</Link>, 
+        or tap your profile picture at the top-right corner of the Fitbit app, followed by 'Fitbit Settings', then 'Date, time & units'.
+      </Text>
+
       <Select
         label="Alignment"
         settingsKey="textAlignment"
@@ -60,11 +66,6 @@ function settingsPage(props: SettingsComponentProps) {
       />
     </Section>
 
-    <Button
-      label="Reset Settings (this cannot be undone!)"
-      onClick={() => props.settingsStorage.clear()}
-    />
-
     <Section title="Debug">
       <Select
         label="Clock Granularity"
@@ -72,6 +73,11 @@ function settingsPage(props: SettingsComponentProps) {
         options={clockGranularityOptions}
       />
     </Section>
+
+    <Button
+      label="Reset Settings (this cannot be undone!)"
+      onClick={() => props.settingsStorage.clear()}
+    />
 
     <Section title="About">
       <Text bold={true} align={"center"}>Chronos v{version}</Text>
