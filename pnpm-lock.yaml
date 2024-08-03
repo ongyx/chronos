@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@fitbit/sdk':
-        specifier: ~7.2.0-pre.0
-        version: 7.2.0-pre.0
+        specifier: ~6.2.0-pre.1
+        version: 6.2.0-pre.1
       '@fitbit/sdk-cli':
         specifier: ^1.8.0-pre.11
         version: 1.8.0-pre.11
@@ -170,8 +170,8 @@ packages:
     engines: {node: '>=8.6.0'}
     hasBin: true
 
-  '@fitbit/sdk@7.2.0-pre.0':
-    resolution: {integrity: sha512-rsrn9gVkiGnByvX41UPUeIkqkSYqr1e8U96B5ClbNodS7uc/IS1/Fl7j8TzSPB6pqDDeKto5k3D9wLhAO8eTbQ==}
+  '@fitbit/sdk@6.2.0-pre.1':
+    resolution: {integrity: sha512-mstsN8Ln5ZpwvkKJJHNxMctH3w7J+KsNKc/L+wu9Hydn5BOnvaP8jSL9Nz1mZ+MZZsMa6U9g6vgAq7Mr52+ORg==}
     engines: {node: '>=10.10.0'}
     hasBin: true
 
@@ -2223,7 +2223,7 @@ snapshots:
       - encoding
       - utf-8-validate
 
-  '@fitbit/sdk@7.2.0-pre.0':
+  '@fitbit/sdk@6.2.0-pre.1':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-syntax-dynamic-import': 7.8.3(@babel/core@7.25.2)
