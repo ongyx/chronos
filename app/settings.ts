@@ -20,7 +20,7 @@ export function init(onUpdate?: (settings: DeviceSettings) => void) {
   onUpdate?.(settings);
 
   // When a message is received from the companion, check if there is a change in settings.
-  recvMessage(msg => {
+  recvMessage((msg) => {
     switch (msg.type) {
       case "settings.add":
         console.log(`Adding setting ${msg.key}=${JSON.stringify(msg.value)}`);

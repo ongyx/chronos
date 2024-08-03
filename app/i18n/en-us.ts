@@ -9,7 +9,7 @@ const DAYS = {
   4: "tue",
   5: "fri",
   6: "sat",
-}
+};
 
 const MONTHS = {
   0: "jan",
@@ -24,7 +24,7 @@ const MONTHS = {
   9: "oct",
   10: "nov",
   11: "dec",
-}
+};
 
 export class EnUs implements Locale {
   public readonly tag = "en-us";
@@ -34,6 +34,6 @@ export class EnUs implements Locale {
     let dayOfMonth = date.getDate();
     let month = MONTHS[date.getMonth()];
 
-    return `${day}, ${month} ${dayOfMonth}`
+    return `${day}, ${month} ${dayOfMonth}`;
   }
 }

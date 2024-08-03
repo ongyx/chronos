@@ -10,7 +10,10 @@ import { TokenList } from "./tokenlist";
  * @param elem - The text element.
  * @param anchor - The anchor to set to.
  */
-export function setTextAnchor(elem: TextElement, anchor: "start" | "middle" | "end") {
+export function setTextAnchor(
+  elem: TextElement,
+  anchor: "start" | "middle" | "end",
+) {
   const classList = new TokenList(elem);
 
   // Remove any existing anchor classes.
