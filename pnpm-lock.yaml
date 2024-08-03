@@ -14,6 +14,9 @@ importers:
       '@fitbit/sdk-cli':
         specifier: ^1.8.0-pre.11
         version: 1.8.0-pre.11
+      feather-icons:
+        specifier: ^4.29.2
+        version: 4.29.2
       fitbit-sdk-types:
         specifier: ^8.0.3
         version: 8.0.3
@@ -480,6 +483,9 @@ packages:
   ci-info@2.0.0:
     resolution: {integrity: sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==}
 
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+
   cli-boxes@2.2.1:
     resolution: {integrity: sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==}
     engines: {node: '>=6'}
@@ -574,6 +580,9 @@ packages:
   core-js@2.6.12:
     resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
     deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+
+  core-js@3.37.1:
+    resolution: {integrity: sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -734,6 +743,9 @@ packages:
   external-editor@3.1.0:
     resolution: {integrity: sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==}
     engines: {node: '>=4'}
+
+  feather-icons@4.29.2:
+    resolution: {integrity: sha512-0TaCFTnBTVCz6U+baY2UJNKne5ifGh7sMG4ZC2LoBWCZdIyPa+y6UiR4lEYGws1JOFWdee8KAsAIvu0VcXqiqA==}
 
   fetch-ponyfill@6.1.1:
     resolution: {integrity: sha512-rWLgTr5A44/XhvCQPYj0X9Tc+cjUaHofSM4lcwjc9MavD5lkjIhJ+h8JQlavPlTIgDpwhuRozaIykBvX9ItaSA==}
@@ -2622,6 +2634,8 @@ snapshots:
 
   ci-info@2.0.0: {}
 
+  classnames@2.5.1: {}
+
   cli-boxes@2.2.1: {}
 
   cli-cursor@2.1.0:
@@ -2706,6 +2720,8 @@ snapshots:
   convert-source-map@2.0.0: {}
 
   core-js@2.6.12: {}
+
+  core-js@3.37.1: {}
 
   core-util-is@1.0.3: {}
 
@@ -2834,6 +2850,11 @@ snapshots:
       chardet: 0.7.0
       iconv-lite: 0.4.24
       tmp: 0.0.33
+
+  feather-icons@4.29.2:
+    dependencies:
+      classnames: 2.5.1
+      core-js: 3.37.1
 
   fetch-ponyfill@6.1.1:
     dependencies:

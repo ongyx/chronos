@@ -1,15 +1,16 @@
 {
   "name": "chronos",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "MIT",
   "devDependencies": {
     "@fitbit/sdk": "~6.2.0-pre.1",
     "@fitbit/sdk-cli": "^1.8.0-pre.11",
+    "feather-icons": "^4.29.2",
     "fitbit-sdk-types": "^8.0.3",
-    "tslib": "^2.6.3",
     "genversion": "^3.2.0",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "tslib": "^2.6.3"
   },
   "fitbit": {
     "appUUID": "be30d039-9843-400f-93a9-f99bb9781edf",
@@ -35,7 +36,7 @@
     "build": "fitbit-build",
     "debug": "fitbit",
     "format": "prettier './**/*/*.{ts,tsx,json}' --write",
-    "genicon": "magick mogrify -format png -size 48x48 -colorspace gray -negate resources/icons/*.svg",
+    "genicon": "magick mogrify -path resources/icons -format png -size 48x48 -colorspace gray -negate @resources/icons/list.txt",
     "genver": "genversion --esm common/version.ts"
   }
 }
