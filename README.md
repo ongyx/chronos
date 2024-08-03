@@ -1,6 +1,12 @@
 # Chronos
 
-A minimalist but highly configurable digital clock face for Fitbit Versa 3/4 and Sense.
+![Screenshot of clock face](preview.png)
+
+A minimalist digital clock face for Fitbit watches.
+
+Credit for the CC BY 2.0 licensed [background image] goes to NASA, ESA, STScI, David Thilker (JHU).
+
+[background image]: https://www.flickr.com/photos/nasahubble/53805163612/in/album-72157667717916603
 
 ## Building
 
