@@ -36,6 +36,7 @@ export const colorOptions = [
 /** Settings stored on the device in a file. */
 export interface DeviceSettings {
   textAlignment: "start" | "middle" | "end";
+  textUppercase: boolean;
   textColor: string;
   backgroundImage: string;
   backgroundColor: string;
@@ -47,6 +48,7 @@ export interface CompanionSettings {
   screenWidth: number;
   screenHeight: number;
   textAlignment: Select;
+  textUppercase: boolean;
   textColor: string;
   backgroundImage?: ImagePicker;
   backgroundColor?: string;
@@ -56,6 +58,7 @@ export interface CompanionSettings {
 /** Returns he default set of device settings. */
 export const defaultDeviceSettings = (): DeviceSettings => ({
   textAlignment: "start",
+  textUppercase: false,
   textColor: "white",
   backgroundImage: "",
   backgroundColor: "black",
@@ -71,6 +74,7 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
     values: [textAlignmentOptions[0]],
     selected: [0],
   },
+  textUppercase: false,
   textColor: "white",
   clockGranularity: {
     values: [clockGranularityOptions[0]],

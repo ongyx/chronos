@@ -15,6 +15,7 @@ import { init as settingsInit } from "./settings";
 import {
   init as clockInit,
   setAlignment as setClockAlignment,
+  setUppercase as setClockUppercase,
   setColor as setClockColor,
 } from "./clock";
 
@@ -41,6 +42,7 @@ touchArea.addEventListener("click", () => {
 
 settingsInit((settings) => {
   setClockAlignment(settings.textAlignment);
+  setClockUppercase(settings.textUppercase);
   setClockColor(settings.textColor);
   setComplicationsAlignment(settings.textAlignment);
   setBackgroundImage(settings.backgroundImage);

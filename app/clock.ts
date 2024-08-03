@@ -4,6 +4,7 @@ import { preferences, locale as localeSettings } from "user-settings";
 import { setTextAnchor } from "./css";
 
 import { getLocale } from "./i18n/registry";
+import { TokenList } from "./tokenlist";
 
 const timeLabel = document.getElementById("time")! as TextElement;
 
@@ -17,7 +18,7 @@ const dateLabel = document.getElementById("date")! as TextElement;
 export function init() {
   clock.granularity = "minutes";
 
-  clock.addEventListener("tick", event => {
+  clock.addEventListener("tick", (event) => {
     updateTime(event);
     updateDate(event);
   });
@@ -38,6 +39,23 @@ export function setAlignment(align: "start" | "middle" | "end") {
   } else {
     setTextAnchor(timeSuffixLabel, "start");
   }
+}
+
+/**
+ * Sets the capitalization of the clock text.
+ *
+ * @param toggle - Whether or not to show the clock text in uppercase.
+ */
+export function setUppercase(toggle: boolean) {
+  const classList = new TokenList(dateLabel);
+
+  if (toggle) {
+    classList.add("uppercase");
+  } else {
+    classList.remove("uppercase");
+  }
+
+  console.log(dateLabel.class);
 }
 
 /**
@@ -66,7 +84,7 @@ function zeroPad(n: number): string {
     return `0${n}`;
   }
 
-  return String(n)
+  return String(n);
 }
 
 /**

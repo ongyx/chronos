@@ -5,7 +5,7 @@
   <svg id="margin">
     <svg id="complication">
       <text id="complication-text" class="text-base text-start"/>
-      <image id="complication-icon" class="icon"/>
+      <image id="complication-icon"/>
     </svg>
 
     <text id="date" class="text-base text-start"/>

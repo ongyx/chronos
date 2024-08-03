@@ -27,6 +27,11 @@ function settingsPage(props: SettingsComponentProps) {
         options={textAlignmentOptions}
       />
 
+      <Toggle
+        label="Enable uppercase"
+        settingsKey="textUppercase"
+      />
+
       <TextInput
         label="Color"
         placeholder="Enter a valid CSS color..."

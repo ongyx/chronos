@@ -102,6 +102,9 @@ function addDeviceSettings(key: string, jsonValue: string) {
 
       break;
 
+    case "textUppercase":
+      break;
+
     case "backgroundImage":
       if (value) {
         // Only send the background image if it is defined.

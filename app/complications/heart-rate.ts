@@ -38,6 +38,7 @@ export class HeartRate implements Complication {
   deactivate(): void {
     if (this.onReading !== undefined && this.sensor !== undefined) {
       this.sensor.removeEventListener("reading", this.onReading);
+      this.sensor.stop();
     }
   }
 }
