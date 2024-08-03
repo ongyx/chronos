@@ -3,6 +3,9 @@ import * as jpeg from "jpeg";
 import { inbox } from "file-transfer";
 import { existsSync, unlinkSync } from "fs";
 
+// FS prefix for transferred files.
+const PRIVATE_DATA = "/private/data";
+
 const backgroundColor = document.getElementById(
   "background-color",
 )! as GraphicsElement;
@@ -17,6 +20,12 @@ export function init() {
 
     while ((filename = inbox.nextFile())) {
       console.log(`Received file ${filename}`);
+
+      // Convert the JPEG into a TXI file and delete the original.
+      jpeg.decodeSync(filename, filename.replace(".jpg", ".txi"));
+      unlinkSync(filename);
+
+      // Pass the raw filename to setImage.
       setImage(filename);
     }
   });
@@ -25,11 +34,11 @@ export function init() {
 /**
  * Sets the app's background image. This deletes the previous background image, if any.
  *
- * @param filename - The filename of the background image. If empty, no background image is shown.
+ * @param filename - The background image filename. If empty, no background image is shown.
  */
 export function setImage(filename: string) {
   if (filename !== "") {
-    filename = `/private/data/${filename}`;
+    filename = `${PRIVATE_DATA}/${filename.replace(".jpg", ".txi")}`;
 
     if (!existsSync(filename)) {
       // Don't set the background image.
