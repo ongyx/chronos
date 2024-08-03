@@ -76,3 +76,15 @@
   x: 100%;
   text-anchor: end;
 }
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}

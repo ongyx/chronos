@@ -10,12 +10,13 @@ import {
   cycle as complicationsCycle,
   init as complicationsInit,
   setAlignment as setComplicationsAlignment,
+  setColor as setComplicationsColor,
 } from "./complications";
 import { init as settingsInit } from "./settings";
 import {
   init as clockInit,
   setAlignment as setClockAlignment,
-  setUppercase as setClockUppercase,
+  setCase as setClockUppercase,
   setColor as setClockColor,
 } from "./clock";
 
@@ -42,9 +43,10 @@ touchArea.addEventListener("click", () => {
 
 settingsInit((settings) => {
   setClockAlignment(settings.textAlignment);
-  setClockUppercase(settings.textUppercase);
+  setClockUppercase(settings.textCase);
   setClockColor(settings.textColor);
   setComplicationsAlignment(settings.textAlignment);
+  setComplicationsColor(settings.textColor);
   setBackgroundImage(settings.backgroundImage);
   setBackgroundColor(settings.backgroundColor);
 

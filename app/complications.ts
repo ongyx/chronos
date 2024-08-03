@@ -80,6 +80,22 @@ export function setAlignment(align: "start" | "middle" | "end") {
   currentAlign = align;
 }
 
+/**
+ * Sets the color of the complication icon and text.
+ *
+ * @param color - The color to use. Must be a valid CSS color.
+ */
+export function setColor(color: string) {
+  for (const elem of [label, icon]) {
+    try {
+      elem.style.fill = color;
+    } catch {
+      // Default to white if invalid.
+      elem.style.fill = "white";
+    }
+  }
+}
+
 function activate(complication: Complication) {
   complication.activate({ label, icon, refresh });
 }

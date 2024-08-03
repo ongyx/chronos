@@ -1,7 +1,8 @@
 import {
-  textAlignmentOptions,
-  colorOptions,
   clockGranularityOptions,
+  colorOptions,
+  textAlignmentOptions,
+  textCaseOptions,
 } from "../common/settings";
 import { version } from "../common/version";
 
@@ -35,7 +36,11 @@ function settingsPage(props: SettingsComponentProps) {
           options={textAlignmentOptions}
         />
 
-        <Toggle label="Enable uppercase" settingsKey="textUppercase" />
+        <Select
+          label="Case"
+          settingsKey="textCase"
+          options={textCaseOptions}
+        />
 
         <TextInput
           label="Color"

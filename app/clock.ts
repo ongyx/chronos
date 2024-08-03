@@ -1,10 +1,9 @@
 import clock, { TickEvent } from "clock";
 import document from "document";
 import { preferences, locale as localeSettings } from "user-settings";
-import { setTextAnchor } from "./css";
+import { setTextAnchor, setTextCase } from "./css";
 
 import { getLocale } from "./i18n/registry";
-import { TokenList } from "./tokenlist";
 
 const timeLabel = document.getElementById("time")! as TextElement;
 
@@ -42,26 +41,18 @@ export function setAlignment(align: "start" | "middle" | "end") {
 }
 
 /**
- * Sets the capitalization of the clock text.
+ * Sets the casing of the clock text.
  *
- * @param toggle - Whether or not to show the clock text in uppercase.
+ * @param casing - The text case, or null to remove any casing.
  */
-export function setUppercase(toggle: boolean) {
-  const classList = new TokenList(dateLabel);
-
-  if (toggle) {
-    classList.add("uppercase");
-  } else {
-    classList.remove("uppercase");
-  }
-
-  console.log(dateLabel.class);
+export function setCase(casing: "upper" | "lower" | "capital" | "none") {
+  setTextCase(dateLabel, casing);
 }
 
 /**
  * Sets the color of the clock text.
  *
- * @param color - The color to use.
+ * @param color - The color to use. Must be a valid CSS color.
  */
 export function setColor(color: string) {
   for (const label of [timeLabel, dateLabel, timeSuffixLabel]) {

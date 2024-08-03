@@ -5,7 +5,7 @@ export type Select = {
     /** The name of the value as shown in the settings UI. */
     name: string;
     /** The actual value, if set in the JSX file. */
-    value?: any;
+    value?: string;
   }[];
   /** The indexes of the value(s) selected. */
   selected: number[];

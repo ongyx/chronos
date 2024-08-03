@@ -7,6 +7,14 @@ export const textAlignmentOptions = [
   { name: "Right", value: "end" },
 ];
 
+/** Options for text case. */
+export const textCaseOptions = [
+  { name: "Uppercase", value: "upper" },
+  { name: "Lowercase", value: "lower" },
+  { name: "Capitalize", value: "capital" },
+  { name: "None", value: "none" },
+];
+
 /** Options for clock granularity. */
 export const clockGranularityOptions = [
   { name: "Minutes", value: "minutes" },
@@ -36,7 +44,7 @@ export const colorOptions = [
 /** Settings stored on the device in a file. */
 export interface DeviceSettings {
   textAlignment: "start" | "middle" | "end";
-  textUppercase: boolean;
+  textCase: "upper" | "lower" | "capital" | "none";
   textColor: string;
   backgroundImage: string;
   backgroundColor: string;
@@ -48,7 +56,7 @@ export interface CompanionSettings {
   screenWidth: number;
   screenHeight: number;
   textAlignment: Select;
-  textUppercase: boolean;
+  textCase: Select;
   textColor: string;
   backgroundImage?: ImagePicker;
   backgroundColor?: string;
@@ -58,7 +66,7 @@ export interface CompanionSettings {
 /** Returns he default set of device settings. */
 export const defaultDeviceSettings = (): DeviceSettings => ({
   textAlignment: "start",
-  textUppercase: false,
+  textCase: "none",
   textColor: "white",
   backgroundImage: "",
   backgroundColor: "black",
@@ -71,12 +79,18 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
   screenWidth: 0,
   screenHeight: 0,
   textAlignment: {
+    // Corresponds to 'left'.
     values: [textAlignmentOptions[0]],
     selected: [0],
   },
-  textUppercase: false,
+  textCase: {
+    // Corresponds to 'none'.
+    values: [textCaseOptions[3]],
+    selected: [3],
+  },
   textColor: "white",
   clockGranularity: {
+    // Corresponds to 'minutes'.
     values: [clockGranularityOptions[0]],
     selected: [0],
   },

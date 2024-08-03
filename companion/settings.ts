@@ -102,7 +102,8 @@ function addDeviceSettings(key: string, jsonValue: string) {
 
       break;
 
-    case "textUppercase":
+    case "textCase":
+      value = getSelected(value);
       break;
 
     case "backgroundImage":
