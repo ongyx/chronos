@@ -33,7 +33,7 @@
     "defaultLanguage": "en-US"
   },
   "scripts": {
-    "build": "fitbit-build",
+    "build": "npm run genver && fitbit-build",
     "debug": "fitbit",
     "format": "prettier './**/*/*.{ts,tsx,json}' --write",
     "genicon": "magick mogrify -path resources/icons -format png -size 48x48 -colorspace gray -negate @resources/icons/list.txt",

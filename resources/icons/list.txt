@@ -2,4 +2,5 @@ node_modules/feather-icons/dist/icons/activity.svg
 node_modules/feather-icons/dist/icons/battery.svg
 node_modules/feather-icons/dist/icons/battery-charging.svg
 node_modules/feather-icons/dist/icons/chevrons-up.svg
+node_modules/feather-icons/dist/icons/droplet.svg
 node_modules/feather-icons/dist/icons/heart.svg

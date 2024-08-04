@@ -7,6 +7,7 @@ import { ActiveZoneMinutes } from "./complications/active-zone-minutes";
 import { Battery } from "./complications/battery";
 import { HeartRate } from "./complications/heart-rate";
 import { Steps } from "./complications/steps";
+import { Calories } from "./complications/calories";
 
 const container = document.getElementById("complication")! as GraphicsElement;
 const label = document.getElementById("complication-text")! as TextElement;
@@ -15,6 +16,7 @@ const icon = document.getElementById("complication-icon")! as ImageElement;
 const availableComplications: { [name in ID]: Complication } = {
   active_zone_minutes: new ActiveZoneMinutes(),
   battery: new Battery(),
+  calories: new Calories(),
   heart_rate: new HeartRate(),
   steps: new Steps(),
 };
@@ -25,7 +27,12 @@ let selectedIndex = 0;
 let currentAlign: "start" | "middle" | "end" | undefined;
 
 /** The complication IDs currently available. */
-export type ID = "active_zone_minutes" | "battery" | "heart_rate" | "steps";
+export type ID =
+  | "active_zone_minutes"
+  | "battery"
+  | "calories"
+  | "heart_rate"
+  | "steps";
 
 /**
  * Initializes the clock's complications.
@@ -57,10 +64,7 @@ export function cycle() {
   const current = selectedComplications[selectedIndex];
 
   if (selectedIndex != previousIndex) {
-    console.log(`Deactivating complication ${previousIndex}`);
     previous.deactivate();
-
-    console.log(`Activating complication ${selectedIndex}`);
     current.activate({ label, icon, refresh });
 
     vibration.start("bump");
@@ -74,6 +78,11 @@ export function cycle() {
  */
 export function setComplications(...ids: ID[]) {
   const complications = ids.map((id) => availableComplications[id]);
+
+  // Don't change the complications if they are the same.
+  if (arrayEqual(complications, selectedComplications)) {
+    return;
+  }
 
   if (selectedComplications.length > 0) {
     // Deactivate the previous complication on screen.
@@ -145,4 +154,8 @@ function refresh() {
     // This recalculates the position of the icon if the text changes.
     setAlignment(currentAlign);
   }
+}
+
+function arrayEqual<T>(a: T[], b: T[]): boolean {
+  return a.length == b.length && a.every((v, i) => v == b[i]);
 }

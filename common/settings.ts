@@ -19,11 +19,14 @@ export const textCaseOptions = [
 
 /** Options for complications. */
 export const complicationsOptions = [
-  { name: "Steps", value: "steps" },
-  { name: "Heart Rate", value: "heart_rate" },
   { name: "Battery", value: "battery" },
+  { name: "Heart Rate", value: "heart_rate" },
+  { name: "Steps", value: "steps" },
   { name: "Active Zone Minutes", value: "active_zone_minutes" },
+  { name: "Calories", value: "calories" },
 ];
+
+const defaultComplicationsOptions = complicationsOptions.slice(0, 3);
 
 /** Options for color pickers. */
 export const colorOptions = [
@@ -74,7 +77,7 @@ export const defaultDeviceSettings = (): DeviceSettings => ({
   textAlignment: "start",
   textCase: "none",
   textColor: "white",
-  complications: complicationsOptions.map((o) => o.value) as ID[],
+  complications: defaultComplicationsOptions.map((o) => o.value) as ID[],
   complicationsColor: "white",
   backgroundImage: "",
   backgroundColor: "black",
@@ -96,8 +99,7 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
     selected: [3],
   },
   textColor: "white",
-  // Enable all complications by default.
-  complications: complicationsOptions,
+  complications: defaultComplicationsOptions,
   complicationsColor: "white",
   backgroundColor: "black",
 });
