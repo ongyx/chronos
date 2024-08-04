@@ -115,7 +115,7 @@ function settingsPage(props: SettingsComponentProps) {
 
       <Section title="About">
         <Text bold={true} align={"center"}>
-          Chronos v{version}
+          Chronos {version}
         </Text>
 
         <Text>
