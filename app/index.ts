@@ -1,4 +1,3 @@
-import clock from "clock";
 import document from "document";
 
 import {
@@ -11,6 +10,7 @@ import {
   init as complicationsInit,
   setAlignment as setComplicationsAlignment,
   setColor as setComplicationsColor,
+  setComplications,
 } from "./complications";
 import { init as settingsInit } from "./settings";
 import {
@@ -20,21 +20,11 @@ import {
   setColor as setClockColor,
 } from "./clock";
 
-import { Battery } from "./complications/battery";
-import { HeartRate } from "./complications/heart-rate";
-import { Steps } from "./complications/steps";
-import { ActiveZoneMinutes } from "./complications/active-zone-minutes";
-
 const touchArea = document.getElementById("touch-area")!;
 
 backgroundInit();
 
-complicationsInit(
-  new Battery(),
-  new HeartRate(),
-  new Steps(),
-  new ActiveZoneMinutes(),
-);
+complicationsInit();
 
 // Cycle complications when the screen is tapped.
 touchArea.addEventListener("click", () => {
@@ -45,12 +35,13 @@ settingsInit((settings) => {
   setClockAlignment(settings.textAlignment);
   setClockUppercase(settings.textCase);
   setClockColor(settings.textColor);
+
+  setComplications(...settings.complications);
   setComplicationsAlignment(settings.textAlignment);
-  setComplicationsColor(settings.textColor);
+  setComplicationsColor(settings.complicationsColor);
+
   setBackgroundImage(settings.backgroundImage);
   setBackgroundColor(settings.backgroundColor);
-
-  clock.granularity = settings.clockGranularity;
 });
 
 clockInit();

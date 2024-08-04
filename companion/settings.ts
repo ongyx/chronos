@@ -4,7 +4,7 @@ import { Image } from "image";
 import { device } from "peer";
 import { settingsStorage } from "settings";
 
-import { getSelected, getImageUri } from "../common/jsx";
+import { getSelected, getImageUri, getAllSelected } from "../common/jsx";
 import { sendMessage } from "../common/message";
 import { defaultCompanionSettings } from "../common/settings";
 
@@ -106,6 +106,17 @@ function addDeviceSettings(key: string, jsonValue: string) {
       value = getSelected(value);
       break;
 
+    case "complications":
+      value = getAllSelected(value);
+      break;
+
+    case "complicationsColor":
+      if (value instanceof Object) {
+        value = value.value;
+      }
+
+      break;
+
     case "backgroundImage":
       if (value) {
         // Only send the background image if it is defined.
@@ -118,10 +129,6 @@ function addDeviceSettings(key: string, jsonValue: string) {
         value = value.value;
       }
 
-      break;
-
-    case "clockGranularity":
-      value = getSelected(value);
       break;
 
     default:

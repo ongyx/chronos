@@ -3,51 +3,95 @@ import { vibration } from "haptics";
 
 import { setTextAnchor } from "./css";
 import { Complication } from "./complication";
+import { ActiveZoneMinutes } from "./complications/active-zone-minutes";
+import { Battery } from "./complications/battery";
+import { HeartRate } from "./complications/heart-rate";
+import { Steps } from "./complications/steps";
 
 const container = document.getElementById("complication")! as GraphicsElement;
 const label = document.getElementById("complication-text")! as TextElement;
 const icon = document.getElementById("complication-icon")! as ImageElement;
 
+const availableComplications: { [name in ID]: Complication } = {
+  active_zone_minutes: new ActiveZoneMinutes(),
+  battery: new Battery(),
+  heart_rate: new HeartRate(),
+  steps: new Steps(),
+};
+
+let selectedComplications: Complication[] = [];
+let selectedIndex = 0;
+
 let currentAlign: "start" | "middle" | "end" | undefined;
 
-let complications: Complication[] = [];
-let index = 0;
+/** The complication IDs currently available. */
+export type ID = "active_zone_minutes" | "battery" | "heart_rate" | "steps";
 
 /**
  * Initializes the clock's complications.
  *
- * @param ccs - The complication list to show. There must be at least one complication.
+ * @param ids - The complications by ID.
  */
-export function init(...ccs: Complication[]) {
-  complications = ccs;
+export function init(...ids: ID[]) {
+  setComplications(...ids);
+}
 
-  if (complications.length > 0) {
-    activate(complications[0]);
-  } else {
-    console.error("Complications are empty!");
+/**
+ * Cycles to the next complication in the complications list.
+ * If the end of the list is reached, this cycles back to the first complication.
+ */
+export function cycle() {
+  // Bail if there are no complications to cycle through.
+  if (!selectedComplications) {
+    return;
+  }
+
+  const previousIndex = selectedIndex;
+
+  selectedIndex++;
+  if (selectedIndex >= selectedComplications.length) {
+    selectedIndex = 0;
+  }
+
+  const previous = selectedComplications[previousIndex];
+  const current = selectedComplications[selectedIndex];
+
+  if (selectedIndex != previousIndex) {
+    console.log(`Deactivating complication ${previousIndex}`);
+    previous.deactivate();
+
+    console.log(`Activating complication ${selectedIndex}`);
+    current.activate({ label, icon, refresh });
+
+    vibration.start("bump");
   }
 }
 
 /**
- * Activates the next complication in the complications list.
- * If the end of the list is reached, this cycles back to the first complication.
+ * Sets the complications to cycle through.
+ *
+ * @param ids - The complications by ID.
  */
-export function cycle() {
-  const previousIndex = index;
+export function setComplications(...ids: ID[]) {
+  const complications = ids.map((id) => availableComplications[id]);
 
-  index++;
-  if (index >= complications.length) {
-    index = 0;
+  if (selectedComplications.length > 0) {
+    // Deactivate the previous complication on screen.
+    selectedComplications[selectedIndex].deactivate();
   }
 
-  if (index != previousIndex) {
-    console.log(`Deactivating complication ${previousIndex}`);
-    complications[previousIndex].deactivate();
+  selectedComplications = complications;
+  selectedIndex = 0;
 
-    console.log(`Activating complication ${index}`);
-    activate(complications[index]);
+  if (complications.length > 0) {
+    // Show the label and icon.
+    container.style.display = "inline";
 
-    vibration.start("bump");
+    // Activate the new current complication on screen.
+    complications[0].activate({ label, icon, refresh });
+  } else {
+    // Hide the label and icon.
+    container.style.display = "none";
   }
 }
 
@@ -94,10 +138,6 @@ export function setColor(color: string) {
       elem.style.fill = "white";
     }
   }
-}
-
-function activate(complication: Complication) {
-  complication.activate({ label, icon, refresh });
 }
 
 function refresh() {

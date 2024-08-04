@@ -1,5 +1,5 @@
 /**
- * A data source that displays information in the UI.
+ * A data source that displays stats in the UI.
  */
 export interface Complication {
   /**
@@ -16,7 +16,7 @@ export interface Complication {
 }
 
 /**
- * A UI context for complications to show their data.
+ * A UI context for complications to show their stats.
  *
  * Currently, the UI only consists of a text label and image icon.
  */

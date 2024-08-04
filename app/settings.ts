@@ -58,7 +58,10 @@ export function init(onUpdate?: (settings: DeviceSettings) => void) {
 
 function readSettings() {
   try {
-    settings = fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
+    const fileSettings = fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
+
+    // If a setting is added during development, this ensures the default will be present.
+    settings = { ...defaultDeviceSettings(), ...fileSettings };
   } catch (e) {
     // This is empty on purpose; the settings will revert to the defaults if the settings file cannot be read.
   }

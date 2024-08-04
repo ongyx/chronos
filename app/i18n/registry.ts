@@ -2,9 +2,9 @@ import { Locale } from "./locale";
 import { EnUs } from "./en-us";
 
 // The locales that can be used.
-let LOCALES: { [tag: string]: Locale } = {};
+const LOCALES: { [tag: string]: Locale } = {};
 
-for (let locale of [new EnUs()]) {
+for (const locale of [new EnUs()]) {
   LOCALES[locale.tag] = locale;
 }
 

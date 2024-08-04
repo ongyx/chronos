@@ -1,4 +1,6 @@
-import { ImagePicker, Select } from "./jsx";
+import { ID } from "../app/complications";
+
+import { ImagePicker, Select, SelectValue } from "./jsx";
 
 /** Options for text alignment. */
 export const textAlignmentOptions = [
@@ -15,10 +17,12 @@ export const textCaseOptions = [
   { name: "None", value: "none" },
 ];
 
-/** Options for clock granularity. */
-export const clockGranularityOptions = [
-  { name: "Minutes", value: "minutes" },
-  { name: "Seconds", value: "seconds" },
+/** Options for complications. */
+export const complicationsOptions = [
+  { name: "Steps", value: "steps" },
+  { name: "Heart Rate", value: "heart_rate" },
+  { name: "Battery", value: "battery" },
+  { name: "Active Zone Minutes", value: "active_zone_minutes" },
 ];
 
 /** Options for color pickers. */
@@ -46,9 +50,10 @@ export interface DeviceSettings {
   textAlignment: "start" | "middle" | "end";
   textCase: "upper" | "lower" | "capital" | "none";
   textColor: string;
+  complications: ID[];
+  complicationsColor: string;
   backgroundImage: string;
   backgroundColor: string;
-  clockGranularity: "minutes" | "seconds";
 }
 
 /** Settings stored on the companion in `settingsStorage`. */
@@ -58,19 +63,21 @@ export interface CompanionSettings {
   textAlignment: Select;
   textCase: Select;
   textColor: string;
+  complications: SelectValue[];
+  complicationsColor: string;
   backgroundImage?: ImagePicker;
-  backgroundColor?: string;
-  clockGranularity: Select;
+  backgroundColor: string;
 }
 
-/** Returns he default set of device settings. */
+/** Returns the default set of device settings. */
 export const defaultDeviceSettings = (): DeviceSettings => ({
   textAlignment: "start",
   textCase: "none",
   textColor: "white",
+  complications: complicationsOptions.map((o) => o.value) as ID[],
+  complicationsColor: "white",
   backgroundImage: "",
   backgroundColor: "black",
-  clockGranularity: "minutes",
 });
 
 /** Returns the default set of companion settings. */
@@ -89,9 +96,8 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
     selected: [3],
   },
   textColor: "white",
-  clockGranularity: {
-    // Corresponds to 'minutes'.
-    values: [clockGranularityOptions[0]],
-    selected: [0],
-  },
+  // Enable all complications by default.
+  complications: complicationsOptions,
+  complicationsColor: "white",
+  backgroundColor: "black",
 });

@@ -1,6 +1,6 @@
 import {
-  clockGranularityOptions,
   colorOptions,
+  complicationsOptions,
   textAlignmentOptions,
   textCaseOptions,
 } from "../common/settings";
@@ -22,12 +22,14 @@ function settingsPage(props: SettingsComponentProps) {
     <Page>
       <Section title="Text">
         <Text>
-          To change the displayed time to 12-hour or 24-hour, go to your{" "}
-          <Link source="https://fitbit.com/settings/profile">
-            profile settings
-          </Link>
-          , or tap your profile picture at the top-right corner of the Fitbit
-          app, followed by 'Fitbit Settings', then 'Date, time & units'.
+          Options for date/time display.
+        </Text>
+
+        <Text>
+          To change the time format to 12-hour or 24-hour: 
+          Go to your Fitbit profile <Link source="https://fitbit.com/settings/profile">settings</Link>, 
+          or in the Fitbit app, tap your profile picture at the top-right corner, 
+          followed by 'Fitbit Settings', then 'Date, time & units'.
         </Text>
 
         <Select
@@ -52,7 +54,36 @@ function settingsPage(props: SettingsComponentProps) {
         <ColorSelect colors={colorOptions} settingsKey="textColor" />
       </Section>
 
+      <Section title="Complications">
+        <Text>
+          Options for complications, which display stats such as battery life, steps walked, and heart rate.
+        </Text>
+
+        <AdditiveList
+          settingsKey="complications"
+          addAction={    
+            <Select
+              label="Add Complication"
+              options={complicationsOptions}
+            />
+          }
+        />
+
+        <TextInput
+          label="Color"
+          placeholder="Enter a valid CSS color..."
+          settingsKey="complicationsColor"
+          onAutocomplete={suggestColor}
+        />
+
+        <ColorSelect colors={colorOptions} settingsKey="complicationsColor" />
+      </Section>
+
       <Section title="Background">
+        <Text>
+          Options for background color/image.
+        </Text>
+
         <ImagePicker
           label="Image (Tap here to pick one)"
           settingsKey="backgroundImage"
@@ -75,14 +106,6 @@ function settingsPage(props: SettingsComponentProps) {
         />
 
         <ColorSelect colors={colorOptions} settingsKey="backgroundColor" />
-      </Section>
-
-      <Section title="Debug">
-        <Select
-          label="Clock Granularity"
-          settingsKey="clockGranularity"
-          options={clockGranularityOptions}
-        />
       </Section>
 
       <Button
