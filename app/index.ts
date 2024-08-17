@@ -1,5 +1,6 @@
 import document from "document";
 
+import { init as aodInit } from "./aod";
 import {
   init as backgroundInit,
   setColor as setBackgroundColor,
@@ -21,6 +22,8 @@ import {
 } from "./clock";
 
 const touchArea = document.getElementById("touch-area")!;
+
+aodInit();
 
 backgroundInit();
 

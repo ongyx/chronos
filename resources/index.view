@@ -1,6 +1,8 @@
 <svg>
-  <rect id="background-color" class="full-size"/>
-  <image id="background-image" class="full-size"/>
+  <svg id="background">
+    <rect id="background-color" class="full-size"/>
+    <image id="background-image" class="full-size"/>
+  </svg>
 
   <svg id="margin">
     <svg id="complication">

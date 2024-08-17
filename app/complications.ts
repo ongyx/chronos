@@ -43,6 +43,14 @@ export function init(...ids: ID[]) {
   setComplications(...ids);
 }
 
+export function show() {
+  container.style.display = "inherit";
+}
+
+export function hide() {
+  container.style.display = "none";
+}
+
 /**
  * Cycles to the next complication in the complications list.
  * If the end of the list is reached, this cycles back to the first complication.

@@ -6,6 +6,9 @@ import { existsSync, unlinkSync } from "fs";
 // FS prefix for transferred files.
 const PRIVATE_DATA = "/private/data";
 
+const backgroundContainer = document.getElementById(
+  "background",
+) as GraphicsElement;
 const backgroundColor = document.getElementById(
   "background-color",
 )! as GraphicsElement;
@@ -29,6 +32,14 @@ export function init() {
       setImage(filename);
     }
   });
+}
+
+export function show() {
+  backgroundContainer.style.display = "inherit";
+}
+
+export function hide() {
+  backgroundContainer.style.display = "none";
 }
 
 /**
