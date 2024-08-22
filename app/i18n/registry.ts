@@ -16,9 +16,9 @@ for (const locale of [new EnUs()]) {
  */
 export function getLocale(tag: string): Locale {
   if (tag in LOCALES) {
-    return LOCALES[tag.toLowerCase()];
+    return LOCALES[tag];
   }
 
   // Fallback to en-us locale.
-  return LOCALES["en-us"];
+  return LOCALES["en-US"];
 }

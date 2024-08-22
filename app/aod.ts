@@ -11,21 +11,21 @@ import {
 export function init() {
   if (display.aodAvailable && appbit.permissions.granted("access_aod")) {
     display.aodAllowed = true;
-  }
 
-  display.addEventListener("change", () => {
-    if (display.on) {
-      if (display.aodActive) {
-        // Hide background and complications.
-        console.log("Hiding");
-        backgroundHide();
-        complicationsHide();
-      } else {
-        // Show them again.
-        console.log("Showing");
-        backgroundShow();
-        complicationsShow();
+    display.addEventListener("change", () => {
+      if (display.on) {
+        if (display.aodActive) {
+          // Hide background and complications.
+          console.log("Hiding");
+          backgroundHide();
+          complicationsHide();
+        } else {
+          // Show them again.
+          console.log("Showing");
+          backgroundShow();
+          complicationsShow();
+        }
       }
-    }
-  });
+    });
+  }
 }

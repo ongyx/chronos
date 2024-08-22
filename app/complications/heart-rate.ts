@@ -1,4 +1,5 @@
 import { me as appbit } from "appbit";
+import { display } from "display";
 import { HeartRateSensor } from "heart-rate";
 
 import { Complication, UI } from "../complication";
@@ -8,6 +9,7 @@ const ICON = "icons/heart.png";
 export class HeartRate implements Complication {
   private sensor?: HeartRateSensor;
   private onReading?: () => void;
+  private onDisplayChange?: () => void;
 
   constructor() {
     if (appbit.permissions.granted("access_heart_rate") && HeartRateSensor) {
@@ -32,6 +34,19 @@ export class HeartRate implements Complication {
 
       this.sensor.addEventListener("reading", this.onReading);
       this.sensor.start();
+
+      this.onDisplayChange = () => {
+        if (this.sensor !== undefined) {
+          // Switch the sensor off when the screen turns off.
+          if (display.on) {
+            this.sensor.start();
+          } else {
+            this.sensor.stop();
+          }
+        }
+      };
+
+      display.addEventListener("change", this.onDisplayChange);
     }
   }
 
@@ -39,6 +54,10 @@ export class HeartRate implements Complication {
     if (this.onReading !== undefined && this.sensor !== undefined) {
       this.sensor.removeEventListener("reading", this.onReading);
       this.sensor.stop();
+    }
+
+    if (this.onDisplayChange !== undefined) {
+      display.removeEventListener("change", this.onDisplayChange);
     }
   }
 }

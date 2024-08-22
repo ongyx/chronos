@@ -1,17 +1,17 @@
 import { Locale } from "./locale";
 
 // NOTE: Date.getDay() returns 0 for Sunday.
-const DAYS = {
+const DAYS: { [day: number]: string } = {
   0: "sun",
   1: "mon",
   2: "tue",
   3: "wed",
-  4: "tue",
+  4: "thu",
   5: "fri",
   6: "sat",
 };
 
-const MONTHS = {
+const MONTHS: { [month: number]: string } = {
   0: "jan",
   1: "feb",
   2: "mar",
@@ -27,7 +27,7 @@ const MONTHS = {
 };
 
 export class EnUs implements Locale {
-  public readonly tag = "en-us";
+  public readonly tag = "en-US";
 
   public formatDate(date: Date): string {
     let day = DAYS[date.getDay()];
