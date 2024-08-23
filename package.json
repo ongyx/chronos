@@ -19,7 +19,6 @@
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
     "requestedPermissions": [
-      "access_aod",
       "access_activity",
       "access_heart_rate",
       "access_user_profile"
