@@ -1,9 +1,9 @@
 import clock, { TickEvent } from "clock";
 import document from "document";
-import { preferences, locale as localeSettings } from "user-settings";
+import { preferences } from "user-settings";
 import { setTextAnchor, setTextCase } from "./css";
 
-import { getLocale } from "./i18n/registry";
+import { getCurrentLocale } from "./i18n/registry";
 
 const timeLabel = document.getElementById("time")! as TextElement;
 
@@ -110,7 +110,7 @@ function updateTime(event: TickEvent) {
 }
 
 function updateDate(event: TickEvent) {
-  let locale = getLocale(localeSettings.language);
+  let locale = getCurrentLocale();
 
   dateLabel.text = locale.formatDate(event.date);
 }
