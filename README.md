@@ -1,12 +1,15 @@
 # Chronos
 
-![Screenshot of clock face](preview.png)
+![Screenshot 1 of clock face](screenshot_1.png) ![Screenshot 2 of clock face](screenshot_2.png)
 
 A minimalist digital clock face for Fitbit watches.
 
 Credit for the CC BY 2.0 licensed [background image] goes to NASA, ESA, STScI, David Thilker (JHU).
 
+The color palette is courtesy of [colors.lol].
+
 [background image]: https://www.flickr.com/photos/nasahubble/53805163612/in/album-72157667717916603
+[colors.lol]: https://colors.lol/podgy
 
 ## Building
 
