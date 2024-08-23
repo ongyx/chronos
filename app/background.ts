@@ -1,10 +1,8 @@
 import document from "document";
 import * as jpeg from "jpeg";
-import { inbox } from "file-transfer";
 import { existsSync, unlinkSync } from "fs";
 
-// FS prefix for transferred files.
-const PRIVATE_DATA = "/private/data";
+import * as inbox from "./inbox";
 
 const backgroundContainer = document.getElementById(
   "background",
@@ -18,60 +16,25 @@ const backgroundImage = document.getElementById(
 
 /** Initializes the app's background. */
 export function init() {
-  inbox.addEventListener("newfile", () => {
-    let filename: string | undefined;
+  inbox.addHandler("jpg", (path, _) => {
+    const txiPath = path.replace(/.jpg$/, ".txi");
 
-    while ((filename = inbox.nextFile())) {
-      console.log(`Received file ${filename}`);
+    // Convert the JPEG into a TXI file and delete the original.
+    jpeg.decodeSync(path, txiPath);
+    unlinkSync(path);
 
-      // Convert the JPEG into a TXI file and delete the original.
-      jpeg.decodeSync(filename, filename.replace(".jpg", ".txi"));
-      unlinkSync(filename);
-
-      // Pass the raw filename to setImage.
-      setImage(filename);
-    }
+    setImage(txiPath);
   });
 }
 
+/** Shows the background image and color. */
 export function show() {
   backgroundContainer.style.display = "inherit";
 }
 
+/** Hides the background image and color. */
 export function hide() {
   backgroundContainer.style.display = "none";
-}
-
-/**
- * Sets the app's background image. This deletes the previous background image, if any.
- *
- * @param filename - The background image filename. If empty, no background image is shown.
- */
-export function setImage(filename: string) {
-  if (filename !== "") {
-    filename = `${PRIVATE_DATA}/${filename.replace(".jpg", ".txi")}`;
-
-    if (!existsSync(filename)) {
-      // Don't set the background image.
-      // This usually happens because the settings message indicating a change
-      // in background image arrives before the background image itself,
-      // which results in an error.
-      return;
-    }
-  }
-
-  const oldFilename = backgroundImage.href;
-  if (filename === oldFilename) {
-    // No-op.
-    return;
-  }
-
-  backgroundImage.href = filename;
-
-  // Delete the old background image.
-  if (oldFilename !== "") {
-    unlinkSync(oldFilename);
-  }
 }
 
 /**
@@ -84,5 +47,44 @@ export function setColor(color: string) {
     backgroundColor.style.fill = color;
   } catch {
     backgroundColor.style.fill = "black";
+  }
+}
+
+/**
+ * Sets the app's background image. This deletes the previous background image, if any.
+ *
+ * @param path - The background image path.
+ */
+export function setImage(path: string) {
+  if (!existsSync(path)) {
+    // The background image may still be transferring, so bail if it does not exist.
+    // The inbox handler guarantees that the fully transferred background image will be shown.
+    return;
+  }
+
+  const oldFilename = backgroundImage.href;
+  if (path === oldFilename) {
+    // Background images are the same - bail.
+    return;
+  }
+
+  backgroundImage.href = path;
+
+  // Delete the old background image.
+  if (oldFilename !== "") {
+    unlinkSync(oldFilename);
+  }
+}
+
+/**
+ * Clears the app's background image by deleting it.
+ */
+export function clearImage() {
+  const path = backgroundImage.href;
+
+  backgroundImage.href = "";
+
+  if (path !== "") {
+    unlinkSync(path);
   }
 }

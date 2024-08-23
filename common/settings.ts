@@ -1,6 +1,17 @@
 import { ID } from "../app/complications";
 
-import { ImagePicker, Select, SelectValue } from "./jsx";
+import {
+  ColorSelect,
+  getAllSelected,
+  getColorSelected,
+  getSelected,
+  ImagePicker,
+  Select,
+  SelectValue,
+} from "./jsx";
+
+export const DEVICE_SETTINGS_FILE = "settings.cbor";
+export const DEVICE_SETTINGS_TYPE = "cbor";
 
 /** Options for text alignment. */
 export const textAlignmentOptions = [
@@ -48,14 +59,17 @@ export const colorOptions = [
   { color: "aqua" },
 ];
 
+export type TextAlignment = "start" | "middle" | "end";
+export type TextCase = "upper" | "lower" | "capital" | "none";
+
 /** Settings stored on the device in a file. */
 export interface DeviceSettings {
-  textAlignment: "start" | "middle" | "end";
-  textCase: "upper" | "lower" | "capital" | "none";
+  textAlignment: TextAlignment;
+  textCase: TextCase;
   textColor: string;
   complications: ID[];
   complicationsColor: string;
-  backgroundImage: string;
+  backgroundImage?: string;
   backgroundColor: string;
 }
 
@@ -65,11 +79,11 @@ export interface CompanionSettings {
   screenHeight: number;
   textAlignment: Select;
   textCase: Select;
-  textColor: string;
+  textColor: ColorSelect;
   complications: SelectValue[];
-  complicationsColor: string;
+  complicationsColor: ColorSelect;
   backgroundImage?: ImagePicker;
-  backgroundColor: string;
+  backgroundColor: ColorSelect;
 }
 
 /** Returns the default set of device settings. */
@@ -79,7 +93,6 @@ export const defaultDeviceSettings = (): DeviceSettings => ({
   textColor: "white",
   complications: defaultComplicationsOptions.map((o) => o.value) as ID[],
   complicationsColor: "white",
-  backgroundImage: "",
   backgroundColor: "black",
 });
 
@@ -103,3 +116,37 @@ export const defaultCompanionSettings = (): CompanionSettings => ({
   complicationsColor: "white",
   backgroundColor: "black",
 });
+
+/**
+ * Parses companion settings into device settings.
+ *
+ * @param companionSettings - The companion settings from `settingsStorage`.
+ * @returns The parsed device settings.
+ */
+export function parseDeviceSettings(
+  companionSettings: CompanionSettings,
+): DeviceSettings {
+  const textAlignment = getSelected(
+    companionSettings.textAlignment,
+  ) as TextAlignment;
+  const textColor = getColorSelected(companionSettings.textColor);
+  const textCase = getSelected(companionSettings.textCase) as TextCase;
+
+  const complications = getAllSelected(companionSettings.complications) as ID[];
+  const complicationsColor = getColorSelected(
+    companionSettings.complicationsColor,
+  );
+
+  const backgroundImage = companionSettings.backgroundImage?.imageUri;
+  const backgroundColor = getColorSelected(companionSettings.backgroundColor);
+
+  return {
+    textAlignment,
+    textColor,
+    textCase,
+    complications,
+    complicationsColor,
+    backgroundImage,
+    backgroundColor,
+  };
+}

@@ -5,6 +5,7 @@ import {
   init as backgroundInit,
   setColor as setBackgroundColor,
   setImage as setBackgroundImage,
+  clearImage as clearBackgroundImage,
 } from "./background";
 import {
   cycle as complicationsCycle,
@@ -13,6 +14,7 @@ import {
   setColor as setComplicationsColor,
   setComplications,
 } from "./complications";
+import { init as inboxInit, PREFIX } from "./inbox";
 import { init as settingsInit } from "./settings";
 import {
   init as clockInit,
@@ -34,6 +36,8 @@ touchArea.addEventListener("click", () => {
   complicationsCycle();
 });
 
+inboxInit();
+
 settingsInit((settings) => {
   setClockAlignment(settings.textAlignment);
   setClockUppercase(settings.textCase);
@@ -43,7 +47,17 @@ settingsInit((settings) => {
   setComplicationsAlignment(settings.textAlignment);
   setComplicationsColor(settings.complicationsColor);
 
-  setBackgroundImage(settings.backgroundImage);
+  if (settings.backgroundImage === undefined) {
+    clearBackgroundImage();
+  } else {
+    // Fix the background image path if needed.
+    if (settings.backgroundImage.match(/\.jpg$/)) {
+      settings.backgroundImage = `${PREFIX}/${settings.backgroundImage.replace(".jpg", ".txi")}`;
+    }
+
+    setBackgroundImage(settings.backgroundImage);
+  }
+
   setBackgroundColor(settings.backgroundColor);
 });
 

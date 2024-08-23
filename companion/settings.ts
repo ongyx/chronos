@@ -1,53 +1,45 @@
 import { me as companion } from "companion";
 import { outbox } from "file-transfer";
+import * as cbor from "cbor";
 import { Image } from "image";
 import { device } from "peer";
 import { settingsStorage } from "settings";
 
-import { getSelected, getImageUri, getAllSelected } from "../common/jsx";
-import { sendMessage } from "../common/message";
-import { defaultCompanionSettings } from "../common/settings";
+import {
+  CompanionSettings,
+  DEVICE_SETTINGS_FILE,
+  defaultCompanionSettings,
+  parseDeviceSettings,
+} from "../common/settings";
+
+const SYNC_DELAY = 2500;
+
+let syncHandle: number | undefined;
+let syncOnChange = true;
 
 /**
  * Initializes the companion's settings.
  */
 export function init() {
-  settingsStorage.addEventListener("change", (event) => {
-    if (event.key === null) {
-      // Storage was cleared, so reset settings.
-      console.log("Resetting settings...");
-      reset();
-      return;
-    }
-
-    // Only change settings if the values differ.
-    if (event.newValue !== event.oldValue) {
-      if (event.newValue === null) {
-        // The setting was removed from storage.
-        removeDeviceSettings(event.key);
-      } else {
-        // The setting was added to or changed in the storage.
-        addDeviceSettings(event.key, event.newValue);
-      }
-    }
-  });
+  settingsStorage.addEventListener("change", onSettingsStorageChange);
 
   if (settingsStorage.length === 0) {
     // Initialize settings on first run.
-    console.log("Initializing settings...");
-    reset();
+    console.log("Initializing companion settings.");
+    resetCompanionSettings();
   }
 
   if (companion.launchReasons.settingsChanged) {
-    console.log("Syncing settings...");
-    sync();
+    // Sync settings when the settings are changed while the companion is not running.
+    console.log("Companion settings changed - syncing to device.");
+    syncDeviceSettings(getCompanionSettings());
   }
 }
 
 /**
  * Resets all settings to their defaults, including those shared with the device.
  */
-function reset() {
+export function resetCompanionSettings() {
   const companionSettings = defaultCompanionSettings();
 
   // Add the screen width and height for cropping background images.
@@ -55,111 +47,76 @@ function reset() {
   companionSettings.screenWidth = width;
   companionSettings.screenHeight = height;
 
-  // Add default companion settings.
-  for (const key in companionSettings) {
-    const value = companionSettings[key];
-
-    settingsStorage.setItem(key, JSON.stringify(value));
-  }
-
-  resetDeviceSettings();
+  setCompanionSettings(companionSettings);
 }
 
 /**
- * Synchronizes all shared settings to the device.
+ * Returns the companion settings persisted in `settingsStorage`.
+ *
+ * @returns The companion settings in use.
  */
-function sync() {
+export function getCompanionSettings(): CompanionSettings {
+  const settings = {};
+
   for (let i = 0; i < settingsStorage.length; i++) {
     const key = settingsStorage.key(i);
     const value = settingsStorage.getItem(key ?? "");
 
     if (key !== null && value !== null) {
-      addDeviceSettings(key, value);
+      settings[key] = JSON.parse(value);
     }
   }
+
+  return settings as CompanionSettings;
 }
 
 /**
- * Adds a setting as a key-value pair to the device.
+ * Persists the given companion settings in `settingsStorage`, and synchronizes them with the device.
  *
- * @param key - The setting's key.
- * @param jsonValue - The setting's value in JSON, retrieved from `settingsStorage`.
+ * @param settings - The companion settings to use.
  */
-function addDeviceSettings(key: string, jsonValue: string) {
-  let value = JSON.parse(jsonValue);
+export function setCompanionSettings(settings: CompanionSettings) {
+  // Disable sync on change.
+  syncOnChange = false;
 
-  switch (key) {
-    case "textAlignment":
-      // Get the actual selected value.
-      value = getSelected(value);
-      break;
+  settingsStorage.clear();
 
-    case "textColor":
-      if (value instanceof Object) {
-        // The text color has been overriden by the input box.
-        value = value.value;
-      }
+  for (const key in settings) {
+    const value = settings[key];
 
-      break;
-
-    case "textCase":
-      value = getSelected(value);
-      break;
-
-    case "complications":
-      value = getAllSelected(value);
-      break;
-
-    case "complicationsColor":
-      if (value instanceof Object) {
-        value = value.value;
-      }
-
-      break;
-
-    case "backgroundImage":
-      if (value) {
-        // Only send the background image if it is defined.
-        value = sendBackgroundImage(getImageUri(value));
-      }
-      break;
-
-    case "backgroundColor":
-      if (value instanceof Object) {
-        value = value.value;
-      }
-
-      break;
-
-    default:
-      // The setting should not be shared with the device.
-      return;
+    settingsStorage.setItem(key, JSON.stringify(value));
   }
 
-  sendMessage({ type: "settings.add", key, value });
+  // Enable sync on change.
+  syncOnChange = true;
+
+  syncDeviceSettings(settings);
 }
 
-/**
- * Removes a setting from the device.
+/*
+ * Synchronizes companion settings to the device.
  *
- * @param key - The setting's key.
+ * @param companionSettings - The companion settings to sync to.
  */
-function removeDeviceSettings(key: string) {
-  sendMessage({ type: "settings.remove", key });
-}
+function syncDeviceSettings(companionSettings: CompanionSettings) {
+  const deviceSettings = parseDeviceSettings(companionSettings);
+  const backgroundImage = deviceSettings.backgroundImage;
 
-/**
- * Resets all settings on the device.
- */
-function resetDeviceSettings() {
-  sendMessage({ type: "settings.reset" });
+  if (backgroundImage !== undefined && backgroundImage.startsWith("data:")) {
+    // Upload the background image using the Base64 URI.
+    deviceSettings.backgroundImage = sendBackgroundImage(backgroundImage);
+  }
+
+  const settingsData = cbor.encode(deviceSettings);
+
+  outbox.enqueue(DEVICE_SETTINGS_FILE, settingsData);
 }
 
 /**
  * Sends a background image to the device.
  *
  * @param uri - The background image as a Base64 encoded Data URI.
- * @returns The background image's filename.
+ * @returns The background image's filename on the device.
  */
 function sendBackgroundImage(uri: string): string {
   const filename = `${Date.now()}.jpg`;
@@ -169,7 +126,37 @@ function sendBackgroundImage(uri: string): string {
       image.export("image/jpeg", { background: "#FFFFFF", quality: 40 }),
     )
     .then((buf) => outbox.enqueue(filename, buf))
-    .then((ft) => console.log(`Sent file ${ft.name}`));
+    .then((ft) => console.log(`settings: Sent background image ${ft.name}`));
 
   return filename;
+}
+
+function onSettingsStorageChange(event: StorageChangeEvent) {
+  if (event.key === null) {
+    // The settings were reset from the TSX page.
+    console.log(`settings: Resetting and syncing`);
+
+    resetCompanionSettings();
+    return;
+  }
+
+  if (syncOnChange) {
+    // The settings have changed, so sync them to the device.
+
+    if (syncHandle !== undefined) {
+      console.log(`settings: Cancelling sync handle ${syncHandle}`);
+
+      // Cancel the existing sync.
+      clearTimeout(syncHandle);
+    }
+
+    syncHandle = setTimeout(() => {
+      console.log("settings: Starting sync with device");
+
+      syncDeviceSettings(getCompanionSettings());
+      syncHandle = undefined;
+    }, SYNC_DELAY);
+
+    console.log(`settings: Starting sync handle ${syncHandle}`);
+  }
 }

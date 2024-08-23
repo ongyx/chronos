@@ -14,11 +14,27 @@ export type Select = {
   selected: number[];
 };
 
+/** The result of a JSX 'ColorSelect'. */
+export type ColorSelect =
+  | string
+  | {
+      value: string;
+    };
+
 /** Returns the first selected value in the select. */
 export function getSelected(select: Select): string {
   const selectValue = select.values[0];
 
   return selectValue.value ?? selectValue.name;
+}
+
+/** Returns the selected color. */
+export function getColorSelected(colorSelect: ColorSelect): string {
+  if (colorSelect instanceof Object) {
+    return colorSelect.value;
+  }
+
+  return colorSelect;
 }
 
 /** The result of a JSX `ImagePicker`. */
@@ -31,11 +47,6 @@ export type ImagePicker = {
     height: number;
   };
 };
-
-/** Returns the Image Data URI of the image picker. */
-export function getImageUri(imagePicker: ImagePicker): string {
-  return imagePicker.imageUri;
-}
 
 /** The result of a JSX `AdditiveList` with an embedded `Select`. */
 export type AdditiveListSelect = SelectValue[];
