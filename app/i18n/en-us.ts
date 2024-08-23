@@ -33,7 +33,8 @@ export class EnUs implements Locale {
     let day = DAYS[date.getDay()];
     let dayOfMonth = date.getDate();
     let month = MONTHS[date.getMonth()];
+    let year = date.getFullYear().toString().slice(-2);
 
-    return `${day}, ${month} ${dayOfMonth}`;
+    return `${day}, ${month} ${dayOfMonth} '${year}`;
   }
 }
